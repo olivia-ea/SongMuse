@@ -1,8 +1,16 @@
+"""Models and databases"""
+
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+# MODELS GO HERE
 
+class User(db.Model):
+    pass
+
+class Playlist(db.Model):
+    pass
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""
@@ -14,12 +22,9 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
 
-
 if __name__ == "__main__":
-    # As a convenience, if we run this module interactively, it will leave
-    # you in a state of being able to work with the database directly.
-
     from server import app
 
     connect_to_db(app)
+    db.create_all()
     print("Connected to DB.")
