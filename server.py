@@ -5,7 +5,7 @@ from views import app
 
 if __name__ == '__main__':
 
-    app.secret_key = 'SECRETSECRETSECRET'
-    app.debug = False
+    app.secret_key = 'SECRET'
+    app.debug = True
     app.run(host="0.0.0.0")
     # connect_to_db(app)

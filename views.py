@@ -13,25 +13,19 @@ app = Flask(__name__)
 app.jinja_env.undefinded = StrictUndefined
 app.debug = True
 
-
 @app.route('/')
 def index():
-
+    """ Homepage """
     return render_template('homepage.html')
 
-@app.route('/services-login')
-def services_login():
-    """Music services login splash page."""
+@app.route('/spotify-auth')
+def authorization():
+    """ Spotify Authorization Page """
 
-    spotify_auth_url = spotify.auth_page()
+    auth_url = spotify.get_user_authorization()
+    
+    return redirect(auth_url)
 
-    return render_template("/services-login.html", 
-                            spotify_auth_url=spotify_auth_url)
-
-# @app.route('/spotify-auth')
-# def authorization():
-#     """ Spotify Authorization Page """
-
-#     auth_url = spotify.user_auth()
-#     return redirect(auth_url)
-
+@app.route('/spotify-callback')
+def doesthiswork():
+    return redirect('/')
