@@ -13,7 +13,9 @@ SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize'
 SPOTIFY_TOKEN_URL = 'https://accounts.spotify.com/api/token'
 SPOTIFY_API_VERSION = 'v1'
 SPOTIFY_API_URL = f'{SPOTIFY_API_BASE_URL}/{SPOTIFY_API_VERSION}'
-SPOTIFY_SCOPE = 'streaming user-read-email user-read-private user-modify-playback-state'
+SPOTIFY_SCOPE = 'streaming user-read-email user-read-private user-read-birthdate user-modify-playback-state'
+
+# create a playlist scope: playlist-modify-public playlist-modify-private
 
 auth_query_param = {
     'response_type': 'code',
