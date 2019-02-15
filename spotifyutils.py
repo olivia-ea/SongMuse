@@ -5,7 +5,7 @@ import base64
 from settings import *
 from views import *
 from flask import request, flash, session
-# from model import User Playlist, db, connect_to_db
+from model import db, connect_to_db, User, Activity, Playlist, Song, Playlist_Song
 
 def generate_auth_url():
     """ Return user authorization url. Used in '/spotify-auth' route. """

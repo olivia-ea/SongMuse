@@ -2,24 +2,24 @@
 <html>
 <head>
     <title>Web App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
 </head>
 <body>
-
+<!-- 
 {% if "user_id" in session %}
   <a href="/logout">Logout</a>
 {% else %}
   <a href="/login">Login</a>
-{% endif %}
+{% endif %} -->
+<!-- 
+    {% for flash in get_flashed_messages() %}
+      {{ flash }}
+    {% endfor %} -->
 
-<hr>
-
-{% for flash in get_flashed_messages() %}
-  {{ flash }}
-{% endfor %}
-
-{% block content %}
-  Put your body here.
-{% endblock %}
+    {% block content %}
+    {% endblock %}
 
 </body>
 </html>

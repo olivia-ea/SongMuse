@@ -4,10 +4,10 @@ from flask import Flask, request, redirect, render_template, flash, session, jso
 # from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
 
-from spotifyutils import *
+import spotifyutils
 import requests
 from settings import *
-# from model import db, connect_to_db, User, Playlist 
+from model import db, connect_to_db, User, Activity, Playlist, Song, Playlist_Song 
 
 app = Flask(__name__)
 app.jinja_env.undefinded = StrictUndefined
@@ -23,61 +23,93 @@ def index():
 def spotify_login():
     """ Spotify Authorization Page """
 
-    spotify_auth_url = generate_auth_url()
+    spotify_auth_url = spotifyutils.generate_auth_url()
 
     return redirect(spotify_auth_url)
 
 @app.route('/spotify-callback')
 def spotify_callback():
 
-    response_data = get_access_token()
+    response_data = spotifyutils.get_access_token()
   
     session['spotify_token'] = response_data.get('access_token')
 
-
     USER_PROFILE_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, 'me')
-
     url = USER_PROFILE_ENDPOINT
-    resp = requests.get(url, headers=auth_header(response_data.get('access_token')))
+    resp = requests.get(url, headers=spotifyutils.auth_header(response_data.get('access_token')))
     print(resp.json())
+
+    # USER_PLAYLISTS_ENDPOINT = "{}/{}".format(USER_PROFILE_ENDPOINT, 'playlists')
+    # url1 = USER_PLAYLISTS_ENDPOINT
+    # resp = requests.get(url1, headers=spotifyutils.auth_header(response_data.get('access_token')))
+    # print(resp.json())
 
 
     return redirect('/')
 
-# @app.route('/activity-page')
-# def issuing_token():
+@app.route('/register-new-user')
+def register_new_user():
 
-#     access_token = session['spotify_token']
+    return render_template('register-new-user.html')
 
-#     query = request.args.get("userquery")
+@app.route('/sign-up-verification', methods=["POST"])
+def sign_up_success():
 
-#     spotify_data = spotify.search(query, access_token)
-   
-#     return jsonify({'spotify': spotify_data})
+    username = request.form.get("new-username")
+    password = request.form.get("new-password")
 
+    # user = db.session.query(User).filter(User.username==username).first()
 
-# USER_PROFILE_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, 'me')
-# def get_users_profile(auth_header):
-#     url = USER_PROFILE_ENDPOINT
-#     resp = requests.get(url, headers=auth_header)
-#     return resp.json()
+    if user:
+        flash("That username is already taken!")
+        return redirect("/register-new-user")
+    else:
+        new_user = User(username=username)
+        
+        db.session.add(new_user)
+        # db.session.commit()
 
+        user_id = new_user.user_id
+        session['logged_user'] = { 'user_id': user_id,
+                                    'username': username}
 
+        flash("Sign-up successful!")
+        return redirect("/activity-page")
 
-# GET_ARTIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, 'artists') 
+@app.route('/login-current-user')
+def login_form():
 
+    return render_template("login-page.html")
 
-# def get_users_recently_played(auth_header):
-#     url = USER_RECENTLY_PLAYED_ENDPOINT
-#     resp = requests.get(url, headers=auth_header)
-#     return resp.json()
+@app.route('/login-verification', methods=["POST"])
+def login_current_user():
 
+    username = request.form.get("username")
+    password = request.form.get("password")
 
+    #user = db.session.query(User).filter(User.username==username).first()
+
+    if user:
+        if user.password == password:
+            user_id = user.user_id
+            session['logged_user'] = {'user_id': user_id,
+                                        'username': username}
+
+            flash("You've successfully logged in!")
+            return redirect("/activity-page")
+        else:
+            flash("The password is incorrect.")
+    else:
+        flash("That username doesn't exist!")
+        return redirect("/login-current-user")
+
+@app.route('/activity-page')
+def display_activity():
+
+    return render_template('activity-page.html')
 
 
 '''
-
-
 import pdb; pdb.set_trace()
 
 response = requests.get(url)

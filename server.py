@@ -1,7 +1,7 @@
 """Server"""
 
 from views import app
-# from model import connect_to_db
+from model import connect_to_db
 
 if __name__ == '__main__':
 

@@ -1,11 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-    <div>
-        This is the homepage!
-    </div>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>This is the homepage!</h1>
+
+  <div>  
+    <button id='spotify'>spotify redirect!</button>
+  </div>
+  <script>
+    
+    function redirectToSpotify(evt) {
+        window.location.replace("/spotify-login");
+    }
+
+    $('#spotify').on('click', redirectToSpotify);
+    
+  </script>
+{% endblock %}

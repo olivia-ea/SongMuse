@@ -1,1 +1,16 @@
- 
+{% extends 'base.html' %}
+{% block content %}
+
+  <div>Select an activity!</div>
+
+  <select>
+    <option value="chill">Chill</option>
+    <option value="study">Study</option>
+    <option value="workout">Workout</option>
+  </select>
+
+  <div>
+    <input type="submit" value="Submit">
+  </div>
+
+{% endblock %}
