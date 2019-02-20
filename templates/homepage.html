@@ -3,16 +3,18 @@
 
     <h1>This is the homepage!</h1>
 
-  <div>  
-    <button id='spotify'>spotify redirect!</button>
-  </div>
-  <script>
-    
-    function redirectToSpotify(evt) {
-        window.location.replace("/spotify-login");
-    }
+    <div>  
+        <button id='spotify'>spotify redirect!</button>
+    </div>
 
-    $('#spotify').on('click', redirectToSpotify);
+    <script>
     
-  </script>
+        function redirectToSpotify(evt) {
+            window.location.replace("/spotify-login");
+        }
+
+        $('#spotify').on('click', redirectToSpotify);
+
+    </script>
+    
 {% endblock %}

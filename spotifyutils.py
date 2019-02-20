@@ -8,7 +8,8 @@ from flask import request, flash, session
 from model import db, connect_to_db, User, Activity, Playlist, Song, Playlist_Song
 
 def generate_auth_url():
-    """ Return user authorization url. Used in '/spotify-auth' route. """
+    """ Returns user authorization url. 
+    Used in '/spotify-login' route. """
 
     spotify_auth_url = (SPOTIFY_AUTH_URL + '?client_id=' + auth_query_param['client_id'] +
                         '&response_type=' + auth_query_param['response_type'] + 
@@ -18,7 +19,8 @@ def generate_auth_url():
     return spotify_auth_url
 
 def get_access_token():
-    """Return authorization token from Spotify."""
+    """ Returns authorization token from Spotify. 
+    Used in '/spotify-callback' route. """
 
     auth_code = request.args['code']
 
@@ -35,79 +37,77 @@ def get_access_token():
 
     return post_request.json()
 
-def auth_header(access_token):
-    """Return Spotify's authorization header.
+def auth_header(token):
+    """ Returns Spotify's authorization header.
     
     Args: access_token is returned from get_access_token().
     """
 
-    return {"Authorization" : f"Bearer {access_token}"}
+    return {"Authorization" : f"Bearer {token}"}
 
-# def search(query, access_token):
-#     """Spotify search request and response.
+
+def search_playlists(activity):
+    """ Finds the playlist id number from the API response. """ 
+
+    # PLAYLIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, "search?q=workout&type=playlist&limit=5&offset=5")
+
+    PLAYLIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, "search?q=" + activity + "&type=playlist&limit=5&offset=5")
+    url = PLAYLIST_ENDPOINT
+    token = session['spotify_token']
+    response = requests.get(url, headers=auth_header(token)).json()
+    playlist_id = (response['playlists']['items'][0]['id'])
+
+    return playlist_id
+
+def search_playlist_tracks():
+    """ Finds the tracks based off the id number. """
+
+    playlist_id = search_playlists()
+
+    TRACK_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, "playlists", playlist_id, "tracks?market=US&limit=10&offset=10")
+    url = TRACK_ENDPOINT
+    token = session['spotify_token']
+    response = requests.get(url, headers=auth_header(token)).json()
+    # track_uri = (response['items'][0]['track']['uri'])
+    # track_name = (response['items'][0]['track']['name'])
+    # track_artist = (response['items'][0]['track']['artists'][0]['name'])
+
+    for i in range(0, len(response)):
+        track_name = (response['items'][i]['track']['name'])
+        track_artist = (response['items'][i]['track']['artists'][0]['name'])
+        track_uri = (response['items'][i]['track']['uri'])
+        new_song = Track(song_name=track_name, artist_name=track_artist, song_uri=track_uri)
+        # db.session.add(new_song)
+        i += 1
+
+    return (track_name, track_artist, track_uri)
     
-#     Args:
-#         query (string) - User inputted query.
-    
-#     Returns a dictionary containing dictionaries with track information 
-#     from API response.
-#     """
+def create_playlist(auth_header, user_id, playlist_tracks, playlist_name):
+    # """ Create playlist and add tracks to playlist. """
 
-#     query_str = query.replace(" ", "%20").lower()
-#     query_str = "q=" + query_str + "&type=track&limit=10"
-#     headers = auth_header(access_token)
-#     url = f"{SPOTIFY_API_URL}/search?{query_str}"
-#     response = requests.get(url, headers=headers).json()
-#     response_lst = response['tracks']['items']
+    # payload = { 
+    #     'name' : f'{playlist_name}',
+    #     'description': 'playlistname'
+    #     }
 
-#     search_list_data = list(map(search_data_map, response_lst))
+    # playlist_request = f'{SPOTIFY_API_URL}/users/{user_id}/playlists'
+    # playlist_data = requests.post(playlist_request, data=json.dumps(payload), headers=auth_header).json()
+    # playlist_id = playlist_data['id']
+    # session['playlist'] = playlist_id
 
-#     return search_list_data
-
-
-
-
-
-
-
-
-
-
-
-    '''
-    baseurl + 
-    "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10
-    &offset=5" -H "Accept: application/json" -H "Content-Type: application/json" 
-    -H "Authorization: Bearer BQCBmQO56ymP3zUs3cT7hd6_XBPreLAGoaCFYoPOL5KhRm2vzV
-    QoWjtQaPCCFq2EWYJl5zZUXsJ7b10tK46eDZLxplUjzO4TceCS-lRkHDYX4VtZPtZfv6EB4WsOLg
-    MP4Qpsnt9I-3J2XZ5MOy_-luIyLrZhvYwvhlSThrrbZh7RkSfFuKH5MtpFFtuyhT8M9RlxcwOJKwBlUuLR6pE"
-    '''
-# def template_request():
-
-#     response = requests.get(f'{SPOTIFY_API_BASE_URL}/{SPOTIFY_API_VERSION}/search')
-#     print(response.json())
+    pass
 
 
 '''
->>> payload = {'token' : '****YOUR-TOKEN****'}
->>> url = 'https://www.eventbriteapi.com/v3/categories'
->>> response = requests.get(url, params=payload)
->>> print(response)
-
-
-https://api.spotify.com/v1/me
-
-curl -X "GET" "https://api.spotify.com/v1/search?q=workout&type=playlist&market
-=US&limit=5&offset=5" -H "Accept: application/json" -H "Content-Type: application
-/json" -H "Authorization: Bearer BQAL1Jj_za2FZ_8PM07ppn7StxmqOEOfaXcE_LxU9I4k7CL
-xsjpJztsKbSedT5edsM0vQXdmin17QzomOQwio6i8MB_0yljOXebiTqf5tEGtJtA37QkZpL1oZ3tVovSUJeHPB7wJ4WSNqVpQ"
-
-use token endpoint
-
-generate token 
-what is a header ask mentor
-header + token
-
+ENDPOINTS:
+Search for a playlist:   GET https://api.spotify.com/v1/search
+Create a playlist:  POST https://api.spotify.com/v1/playlists
+Add tracks to a playlist: POST https://api.spotify.com/v1/playlists/{playlist_id}/tracks
+Get the playlist: GET https://api.spotify.com/v1/playlists/{playlist_id}
 
 '''
+
+
+
+
 

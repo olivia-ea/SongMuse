@@ -1,11 +1,11 @@
 """API requests and routes"""
 
 from flask import Flask, request, redirect, render_template, flash, session, jsonify
-# from flask_debugtoolbar import DebugToolbarExtension
+from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
+import requests
 
 import spotifyutils
-import requests
 from settings import *
 from model import db, connect_to_db, User, Activity, Playlist, Song, Playlist_Song 
 
@@ -34,65 +34,58 @@ def spotify_callback():
   
     session['spotify_token'] = response_data.get('access_token')
 
-    USER_PROFILE_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, 'me')
-    url = USER_PROFILE_ENDPOINT
-    resp = requests.get(url, headers=spotifyutils.auth_header(response_data.get('access_token')))
-    print(resp.json())
+    return render_template('callback-page.html')
 
-    # USER_PLAYLISTS_ENDPOINT = "{}/{}".format(USER_PROFILE_ENDPOINT, 'playlists')
-    # url1 = USER_PLAYLISTS_ENDPOINT
-    # resp = requests.get(url1, headers=spotifyutils.auth_header(response_data.get('access_token')))
-    # print(resp.json())
-
-
-    return redirect('/')
-
-@app.route('/register-new-user')
+@app.route('/register-new-user', methods=['GET'])
 def register_new_user():
 
     return render_template('register-new-user.html')
 
 @app.route('/sign-up-verification', methods=["POST"])
-def sign_up_success():
+def register_process():
+    """ Register New User """
 
-    username = request.form.get("new-username")
-    password = request.form.get("new-password")
+    username = request.form["new-username"]
+    password = request.form["new-password"]
 
-    # user = db.session.query(User).filter(User.username==username).first()
+    user = User.query.filter(User.username==username).first()
 
     if user:
         flash("That username is already taken!")
         return redirect("/register-new-user")
     else:
-        new_user = User(username=username)
+        new_user = User(username=username, password=password)
         
         db.session.add(new_user)
-        # db.session.commit()
+        db.session.commit()
 
         user_id = new_user.user_id
-        session['logged_user'] = { 'user_id': user_id,
-                                    'username': username}
+        session['logged_user'] = {  'user_id': user_id,
+                                    'username': username,
+                                    'password': password}
 
-        flash("Sign-up successful!")
+        flash(f"User {username} added.")
+
         return redirect("/activity-page")
 
-@app.route('/login-current-user')
+@app.route('/login-current-user', methods=['GET'])
 def login_form():
 
     return render_template("login-page.html")
 
 @app.route('/login-verification', methods=["POST"])
 def login_current_user():
+    """ Login for Exisiting User """
 
     username = request.form.get("username")
     password = request.form.get("password")
 
-    #user = db.session.query(User).filter(User.username==username).first()
+    user = User.query.filter(User.username==username).first()
 
     if user:
         if user.password == password:
             user_id = user.user_id
-            session['logged_user'] = {'user_id': user_id,
+            session['logged_user'] = {  'user_id': user_id,
                                         'username': username}
 
             flash("You've successfully logged in!")
@@ -105,39 +98,29 @@ def login_current_user():
 
 @app.route('/activity-page')
 def display_activity():
+    """ Activity Page """
+
+    token = session['spotify_token']
+
+    # print(spotifyutils.search_playlists())
+    # print(spotifyutils.search_playlist_tracks())
 
     return render_template('activity-page.html')
 
+@app.route('/logout')
+def logout():
+    """Log out"""
+
+    del session["logged_user"]
+    del session['spotify_token']
+    flash("Logged Out.")
+
+    return redirect("/")
 
 '''
 import pdb; pdb.set_trace()
 
-response = requests.get(url)
-return response.json()
-
-API ENDPOINTS
-
-Get a Playlist
-/v1/playlists/{playlist_id}
-GET
-Returns: playlist
-
-Create a Playlist
-POST
-/v1/users/{user_id}/playlists
-
-Add Tracks to a Playlist
-POST
-/v1/playlists/{playlist_id}/tracks
-
-
-SEARCH FOR A PLAYLIST USING STRING
-https://api.spotify.com/v1/search
-
 '''
-
-
-
 
 
 

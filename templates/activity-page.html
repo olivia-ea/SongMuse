@@ -10,7 +10,63 @@
   </select>
 
   <div>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Submit" id='search-button'>
   </div>
 
+
+<!--     <script>
+    
+        // let menuId = $("ul.nav").first().attr("id");
+        // // let keyword = whatever user specified
+        // $("button").click(function(){
+        // let request = $.ajax({
+        //   url: "https://api.spotify.com/v1/search",
+        //   type: "GET",
+        //   data: {q : keyword, type: 'playlist'},
+        //   dataType: "application/json"
+        // });
+
+
+        // $('#search-button').on('click', searchAPI);
+
+        var url = "https://api.spotify.com/v1/search?q=workout&type=playlist&limit=1&offset=1"
+        
+
+        $("#search-button").click(function(){
+          $.ajax({
+            url: url,
+            type: "GET",
+            contentType: "application/json",
+            headers: '{{resp}}',
+            success: function(data) {
+                //print result of get
+                console.log(data);
+            }
+          });
+
+
+    </script> -->
+
+<br>
+<br>
+<br>
+<div>  
+    <button id='logout-user'>logout</button>
+</div>
+
+
+<script>
+    function logoutExistingUser(evt) {
+        window.location.replace("/logout");
+    }
+
+    $('#logout-user').on('click', logoutExistingUser);
+</script>
 {% endblock %}
+
+<!-- $("button").click(function(){
+  $.ajax({url: "demo_test.txt", success: function(result){
+    $("#div1").html(result);
+  }});
+});
+ -->

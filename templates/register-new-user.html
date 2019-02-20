@@ -1,23 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Register</h1>
+<h1>Register</h1> 
 
-<form action="register" method="POST">
+<form id="sign-up-form" action="/sign-up-verification" method="POST">
+  <label>
+      Username: 
+  </label>
 
-  <div>
-    <label>
-      Username
-      <input type="text" name="new-username" required>
-    </label>
-  </div>
+  <input type="text" name="new-username" required>
 
-  <div>
-    <label>
-      Password
-      <input type="password" name="new-password" required>
-    </label>
-  </div>
+  <label>
+      Password: 
+  </label>
+
+  <input type="password" name="new-password" required>
 
   <div>
     <input type="submit" value="Register">

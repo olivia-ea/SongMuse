@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>This is the callback page!</h1>
+
+    <label>Create new account</label>
+    <div>  
+        <button id='new-user'>submit</button>
+    </div>
+
+    <label>Login</label>
+    <div>  
+        <button id='returning-user'>submit</button>
+    </div>
+
+    <script>
+    
+        function createNewUser(evt) {
+            window.location.replace("/register-new-user");
+        }
+
+        function loginExistingUser(evt) {
+            window.location.replace("/login-current-user");
+        }
+
+        $('#new-user').on('click', createNewUser);
+
+        $('#returning-user').on('click', loginExistingUser);
+
+    </script>
+
+{% endblock %}

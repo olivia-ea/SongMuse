@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
   <h1>Login</h1>
-  <form action="/login" method="POST">
+  <form id="login-form" action="/login-verification" method="POST">
 
     <div>
       <label>Username:
@@ -20,4 +20,5 @@
     </div>
 
   </form>
+
 {% endblock %}
