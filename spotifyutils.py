@@ -46,12 +46,14 @@ def auth_header(token):
     return {"Authorization" : f"Bearer {token}"}
 
 
-def search_playlists(activity):
+def search_playlists():
     """ Finds the playlist id number from the API response. """ 
+    # should take in activity but omitted for demo purposes 
 
-    # PLAYLIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, "search?q=workout&type=playlist&limit=5&offset=5")
+    PLAYLIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, "search?q=workout&type=playlist&limit=5&offset=5")
+    # testing
 
-    PLAYLIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, "search?q=" + activity + "&type=playlist&limit=5&offset=5")
+    # PLAYLIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, "search?q=" + activity + "&type=playlist&limit=5&offset=5")
     url = PLAYLIST_ENDPOINT
     token = session['spotify_token']
     response = requests.get(url, headers=auth_header(token)).json()
@@ -68,34 +70,84 @@ def search_playlist_tracks():
     url = TRACK_ENDPOINT
     token = session['spotify_token']
     response = requests.get(url, headers=auth_header(token)).json()
-    # track_uri = (response['items'][0]['track']['uri'])
-    # track_name = (response['items'][0]['track']['name'])
-    # track_artist = (response['items'][0]['track']['artists'][0]['name'])
+    track_uri = (response['items'][0]['track']['uri'])
+    track_name = (response['items'][0]['track']['name'])
+    track_artist = (response['items'][0]['track']['artists'][0]['name'])
 
-    for i in range(0, len(response)):
-        track_name = (response['items'][i]['track']['name'])
-        track_artist = (response['items'][i]['track']['artists'][0]['name'])
-        track_uri = (response['items'][i]['track']['uri'])
-        new_song = Track(song_name=track_name, artist_name=track_artist, song_uri=track_uri)
-        # db.session.add(new_song)
-        i += 1
+    # for i in range(0, len(response)):
+    #     track_name = (response['items'][i]['track']['name'])
+    #     track_artist = (response['items'][i]['track']['artists'][0]['name'])
+    #     track_uri = (response['items'][i]['track']['uri'])
+    #     new_song = Track(song_name=track_name, artist_name=track_artist, song_uri=track_uri)
+    #     # db.session.add(new_song)
+    #     i += 1
 
-    return (track_name, track_artist, track_uri)
+    return track_name, track_artist, track_uri
     
-def create_playlist(auth_header, user_id, playlist_tracks, playlist_name):
-    # """ Create playlist and add tracks to playlist. """
+def get_user_id():
+    """ Return users spotify id to add to database """ 
+
+    token = session['spotify_token']
+    headers = auth_header(token)
+
+    request = f'{SPOTIFY_API_URL}/me'
+    user_info_data = requests.get(request, headers=headers).json()
+    user_id = user_info_data['id']
+
+    return user_id
+
+def create_playlist(auth_header, user_id, playlist_tracks, mood, playlist_name):
+    """ Create playlist and add tracks to playlist. """
+
+    # playlist_id 
+    # user_id =ForeignKey
+    # activity_id = ForeignKey
+    # playlist_name = 
+    # playlist_uri = 
+
+    # name = f'{playlist_name}'
 
     # payload = { 
-    #     'name' : f'{playlist_name}',
-    #     'description': 'playlistname'
+    #     'name' : name,
+    #     'description': 'Activity generated playlist'
     #     }
 
-    # playlist_request = f'{SPOTIFY_API_URL}/users/{user_id}/playlists'
-    # playlist_data = requests.post(playlist_request, data=json.dumps(payload), headers=auth_header).json()
+    # USER_PLAYLIST_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'users', user_id, 'playlists')
+    # url = USER_PLAYLIST_ENDPOINT
+    # playlist_data = requests.post(url, data=json.dumps(payload), headers=auth_header).json()
     # playlist_id = playlist_data['id']
     # session['playlist'] = playlist_id
 
+    # playlist_exist = db.session.query(Playlist).filter(Playlist.id == playlist_id).all()
+
+    # if not playlist_exist:
+    #     new_playlist = Playlist(id = playlist_id,
+    #                             user_id = user_id,
+    #                             mood = mood)
+    #     db.session.add(new_playlist)
+
+
+    # # for track in playlist_tracks:
+    # #     playlist_track_exist = db.session.query(PlaylistTrack).filter(PlaylistTrack.playlist_id == playlist_id, PlaylistTrack.track_uri == track).all()
+    # #     if not playlist_track_exist:
+    #         # new_playlist_track = PlaylistTrack(playlist_id = playlist_id, track_uri = track)
+    # #         db.session.add(new_playlist_track)
+
+    # new_playlist_track = PlaylistTrack(playlist_id = playlist_id, track_uri = track)
+    # db.session.add(new_playlist_track)
+
+
+    # db.session.commit()
+
+    # track_uris = '%2C'.join(playlist_tracks)
+    # add_tracks = f'{SPOTIFY_API_URL}/playlists/{playlist_id}/tracks?uris={track_uris}'
+    # tracks_added = requests.post(add_tracks, headers=auth_header).json()
+    # # tracks_added = post_spotify_data(add_tracks, auth_header)
+
+    # return playlist_data['external_urls']['spotify']
+
     pass
+
 
 
 '''

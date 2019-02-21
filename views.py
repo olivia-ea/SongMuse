@@ -1,6 +1,6 @@
 """API requests and routes"""
 
-from flask import Flask, request, redirect, render_template, flash, session, jsonify
+from flask import Flask, request, redirect, render_template, flash, session, jsonify, json
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
 import requests
@@ -30,9 +30,9 @@ def spotify_login():
 @app.route('/spotify-callback')
 def spotify_callback():
 
-    response_data = spotifyutils.get_access_token()
+    spotify_response_data = spotifyutils.get_access_token()
   
-    session['spotify_token'] = response_data.get('access_token')
+    session['spotify_token'] = spotify_response_data.get('access_token')
 
     return render_template('callback-page.html')
 
@@ -104,6 +104,51 @@ def display_activity():
 
     # print(spotifyutils.search_playlists())
     # print(spotifyutils.search_playlist_tracks())
+
+    user_id = spotifyutils.get_user_id()
+    # username = session['logged_user']
+    # auth_header = spotify.auth_header(token)
+
+    # name = request.args.get('name')
+
+    # session['name'] = name
+
+    # user = db.session.query(User).filter(User.id == username).one()
+    # user_tracks = user.tracks
+
+
+    # playlist_id 
+    # user_id =ForeignKey
+    # activity_id = ForeignKey
+    # playlist_name = 
+    # playlist_uri = 
+
+    # GOES INTO FUNCTION: auth_header, user_id, playlist_tracks, mood, playlist_name
+    headers = spotifyutils.auth_header(token)
+    print(headers)
+
+    print('****************')
+    name = 'Workout'
+    activity= 'workout'
+
+    payload = { 
+        'name' : name,
+        'description': 'Activity generated playlist'
+        }
+
+    USER_PLAYLIST_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'users', user_id, 'playlists')
+    url = USER_PLAYLIST_ENDPOINT
+    print(url)
+    playlist_data = requests.post(url, data=json.dumps(payload), headers=headers).json()
+    playlist_id = playlist_data['id']
+    playlist_uri = playlist_data['uri']
+    print('playlist_id', playlist_id)
+    print('playlist_uri', playlist_uri)
+    session['playlist'] = playlist_id
+
+    new_playlist = Playlist(playlist_id=playlist_id, user_id=user_id, playlist_name=name, playlist_uri=playlist_uri)
+    db.session.add(new_playlist)
+    db.session.commit()
 
     return render_template('activity-page.html')
 

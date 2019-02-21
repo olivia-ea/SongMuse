@@ -7,10 +7,7 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
 
-    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    username = db.Column(db.String(50), nullable=False)
-    password = db.Column(db.String(50), nullable=False)
-    user_token = db.Column(db.String(500), nullable=False)
+    user_id = db.Column(db.String(50), primary_key=True)
     refresh_token = db.Column(db.String(500), nullable=False)
 
     def __repr__(self):
@@ -19,13 +16,10 @@ class User(db.Model):
 class Activity(db.Model):
     __tablename__ = 'activities'
 
-    activity_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
-    activity_name = db.Column(db.String(50), nullable=False)
+    activity_id = db.Column(db.String(50), primary_key=True)
+    user_id = db.Column(db.String(50), db.ForeignKey('users.user_id'), nullable=False)
 
     user = db.relationship('User', backref=db.backref('activities')) 
-
-    #secondary='users_activities',
 
     def __repr__(self):
         return f'<Activity activity_id={self.activity_id} activity_name={self.activity_name}>'
@@ -45,11 +39,10 @@ class Activity(db.Model):
 class Playlist(db.Model):
     __tablename__ = 'playlists'
 
-    playlist_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
-    activity_id = db.Column(db.Integer, db.ForeignKey('activities.activity_id'), index=True)
-    playlist_name = db.Column(db.String(50), nullable=False)
-    playlist_uri = db.Column(db.String(50), nullable=False)
+    playlist_id = db.Column(db.String(100), primary_key=True)
+    playlist_uri = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.String(50), db.ForeignKey('users.user_id'), nullable=False)
+    activity_id = db.Column(db.String(50), db.ForeignKey('activities.activity_id'), nullable=False)
 
     user = db.relationship('User', backref=db.backref('playlists')) 
     activity = db.relationship('Activity', backref=db.backref('playlists')) 
@@ -60,10 +53,10 @@ class Playlist(db.Model):
 class Song(db.Model):
     __tablename__ = 'songs'
 
-    song_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    song_name = db.Column(db.String(50), nullable=False)
+    song_id = db.Column(db.String(100), primary_key=True)
+    song_name = db.Column(db.String(100), nullable=False)
     artist_name = db.Column(db.String(100), nullable=False)
-    song_uri = db.Column(db.String(50), nullable=False)
+    song_uri = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
         return f'<Song song_id={self.song_id} song_name={self.song_name} artist_name={self.artist_name}>'
@@ -71,8 +64,9 @@ class Song(db.Model):
 class Playlist_Song(db.Model):
     __tablename__ = "playlists_songs"
 
-    playlist_id = db.Column(db.Integer, db.ForeignKey('playlists.playlist_id'), index=True)
-    song_id = db.Column(db.Integer, db.ForeignKey('songs.song_id'), index=True)
+    playlist_song_id = db.Column(db.String(100), primary_key=True)
+    playlist_id = db.Column(db.String(100), db.ForeignKey('playlists.playlist_id'))
+    song_id = db.Column(db.String(100), db.ForeignKey('songs.song_id'))
 
     playlist = db.relationship('Playlist', backref=db.backref('playlists_songs')) 
     song = db.relationship('Song', backref=db.backref('playlists_songs')) 
