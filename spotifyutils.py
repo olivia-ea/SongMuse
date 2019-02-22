@@ -50,42 +50,54 @@ def search_playlists():
     """ Finds the playlist id number from the API response. """ 
     # should take in activity but omitted for demo purposes 
 
-    PLAYLIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, "search?q=workout&type=playlist&limit=5&offset=5")
-    # testing
+    PLAYLIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, "search?q=workout&type=playlist&limit=3&offset=3")
+    # HARD CODED FOR TESTING WILL CHANGE LATER
 
     # PLAYLIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, "search?q=" + activity + "&type=playlist&limit=5&offset=5")
     url = PLAYLIST_ENDPOINT
-    token = session['spotify_token']
+    token = session.get('access_token')
     response = requests.get(url, headers=auth_header(token)).json()
-    playlist_id = (response['playlists']['items'][0]['id'])
+    playlist_id_1 = (response['playlists']['items'][0]['id'])
+    # playlist_id_2 = (response['playlists']['items'][1]['id'])
+    # playlist_id_3 = (response['playlists']['items'][2]['id'])
 
-    return playlist_id
+    # for i in range(0, len(response)):
+    #     playlist_id = (response['playlists']['items'][i]['id'])
+    #     i += 1
+
+
+    return playlist_id_1
+    # , playlist_id_2, playlist_id_3
 
 def search_playlist_tracks():
     """ Finds the tracks based off the id number. """
 
-    playlist_id = search_playlists()
+    playlist_id_1= search_playlists()
+    # , playlist_id_2, playlist_id_3 
+    # needs to take in three playlists
 
     TRACK_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, "playlists", playlist_id, "tracks?market=US&limit=10&offset=10")
     url = TRACK_ENDPOINT
-    token = session['spotify_token']
+    token = session.get('access_token')
     response = requests.get(url, headers=auth_header(token)).json()
-    track_uri = (response['items'][0]['track']['uri'])
-    track_name = (response['items'][0]['track']['name'])
-    track_artist = (response['items'][0]['track']['artists'][0]['name'])
 
-    # for i in range(0, len(response)):
-    #     track_name = (response['items'][i]['track']['name'])
-    #     track_artist = (response['items'][i]['track']['artists'][0]['name'])
-    #     track_uri = (response['items'][i]['track']['uri'])
-    #     new_song = Track(song_name=track_name, artist_name=track_artist, song_uri=track_uri)
-    #     # db.session.add(new_song)
-    #     i += 1
 
-    return track_name, track_artist, track_uri
+    for i in range(0, len(response)):
+        track_name = (response['items'][i]['track']['name'])
+        track_artist = (response['items'][i]['track']['artists'][0]['name'])
+        track_uri = (response['items'][i]['track']['uri'])
+        new_song = Song(song_name=track_name, artist_name=track_artist, song_uri=track_uri)
+        db.session.add(new_song)
+        db.session.commit()
+        i += 1
+    # added 14 songs instead of 10 FIX LATER
+
+    return ('added to DB')
     
 def get_user_id(auth_header):
     """ Return users spotify id to add to database """ 
+
+    # Use later to push playlist to user's spotify account
 
     request = f'{SPOTIFY_API_URL}/me'
     user_info_data = requests.get(request, headers=auth_header).json()
@@ -93,7 +105,7 @@ def get_user_id(auth_header):
 
     return user_id
 
-def create_playlist(auth_header, user_id, playlist_tracks, mood, playlist_name):
+def create_playlist(auth_header, user_id, playlist_tracks, playlist_name):
     """ Create playlist and add tracks to playlist. """
 
     # name = f'{playlist_name}'
@@ -145,7 +157,9 @@ def create_playlist(auth_header, user_id, playlist_tracks, mood, playlist_name):
 1. Search for 5 playlists 
 2. Get playlists' ID and randomly select 10 tracks
 3. Push all tracks to Song table
-4. 
+4. \
+
+ADD TRACKS    https://api.spotify.com/v1/playlists/{playlist_id}/tracks
 '''
 
 

@@ -115,29 +115,34 @@ def display_activity():
 
     token = session.get('access_token')
     auth_header = spotifyutils.auth_header(token)
-    s_user_id = spotifyutils.get_user_id(auth_header)
-    username = session['logged_user']['user_id']
 
-    name = 'Workout'
-    activity= 'workout'
+    print(spotifyutils.search_playlists())
+    print(spotifyutils.search_playlist_tracks())
+    spotifyutils.search_playlist_tracks()
 
-    payload = { 
-        'name' : name,
-        'description': 'Activity generated playlist'
-        }
+    # s_user_id = spotifyutils.get_user_id(auth_header)
+    # username = session['logged_user']['user_id']
 
-    USER_PLAYLIST_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'users', s_user_id, 'playlists')
-    url = USER_PLAYLIST_ENDPOINT
-    playlist_data = requests.post(url, data=json.dumps(payload), headers=auth_header).json()
-    playlist_id = playlist_data['id']
-    playlist_uri = playlist_data['uri']
-    print('playlist_id', playlist_id)
-    print('playlist_uri', playlist_uri)
-    session['playlist'] = playlist_id
+    # name = 'Workout'
+    # activity= 'workout'
 
-    new_playlist = Playlist(playlist_id=playlist_id, playlist_uri=playlist_uri, user_id=username, activity_id='workout')
-    db.session.add(new_playlist)
-    db.session.commit()
+    # payload = { 
+    #     'name' : name,
+    #     'description': 'Activity generated playlist'
+    #     }
+
+    # USER_PLAYLIST_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'users', s_user_id, 'playlists')
+    # url = USER_PLAYLIST_ENDPOINT
+    # playlist_data = requests.post(url, data=json.dumps(payload), headers=auth_header).json()
+    # playlist_id = playlist_data['id']
+    # playlist_uri = playlist_data['uri']
+    # print('playlist_id', playlist_id)
+    # print('playlist_uri', playlist_uri)
+    # session['playlist'] = playlist_id
+
+    # new_playlist = Playlist(playlist_id=playlist_id, playlist_uri=playlist_uri, user_id=username, activity_id='workout')
+    # db.session.add(new_playlist)
+    # db.session.commit()
 
     return render_template('activity-page.html')
 
