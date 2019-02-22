@@ -31,8 +31,21 @@ def spotify_login():
 def spotify_callback():
 
     spotify_response_data = spotifyutils.get_access_token()
-  
-    session['spotify_token'] = spotify_response_data.get('access_token')
+    session['access_token'] = spotify_response_data.get('access_token')
+    session['refresh_token'] = spotify_response_data.get('refresh_token')
+
+    '''
+    print('spotify_response_data', spotify_response_data)
+
+    {'access_token': 'BQDgSUqcuazClu-tfUSCKSwpKBeuwLRNTdW76aicr470cBMJL3KRK2J_yN6TahL
+    jpvwa5GnUK3CuPQlctO-p7B41pVVCPkRPwRft9jowupGrOwbzevEJCpaf2IID3zpmiGnvm1ro9N7MW4f
+    W2y-ImC6Era65m_Pp1lDkeCyJHTJoOmvL8qC543nhxMVhnfmfoRt-M83aQw', 'token_type': 'Be
+    arer', 'expires_in': 3600, 'refresh_token': 'AQBERXBoAdsvdbsT_ZdhjMYmEusNn_kQuUFl
+    B-fJIz6yT8d4uLIgLS0g_DnfrZggoFSdR3RikZ3mf4BbK7cxQpRTgqAfCWFJEszX3oDGlouPzm1wciKY4
+    eCqCke-uktjjwej3w', 'scope': 'streaming playlist-read-collaborative user-modify-pl
+    ayback-state playlist-modify-public user-read-birthdate user-read-email user-rea
+    d-private'}
+    '''
 
     return render_template('callback-page.html')
 
@@ -48,20 +61,19 @@ def register_process():
     username = request.form["new-username"]
     password = request.form["new-password"]
 
-    user = User.query.filter(User.username==username).first()
+    user = User.query.filter(User.user_id==username).first()
 
     if user:
         flash("That username is already taken!")
-        return redirect("/register-new-user")
+        return redirect("/login-current-user")
     else:
-        new_user = User(username=username, password=password)
+        new_user = User(user_id=username, password=password, refresh_token=session.get('refresh_token'))
         
         db.session.add(new_user)
         db.session.commit()
 
         user_id = new_user.user_id
-        session['logged_user'] = {  'user_id': user_id,
-                                    'username': username,
+        session['logged_user'] = { 'username': username,
                                     'password': password}
 
         flash(f"User {username} added.")
@@ -80,13 +92,14 @@ def login_current_user():
     username = request.form.get("username")
     password = request.form.get("password")
 
-    user = User.query.filter(User.username==username).first()
+    user = User.query.filter(User.user_id==username).first()
 
     if user:
         if user.password == password:
             user_id = user.user_id
             session['logged_user'] = {  'user_id': user_id,
-                                        'username': username}
+                                        'password': password,
+                                        'refresh_token': session.get('refresh_token')}
 
             flash("You've successfully logged in!")
             return redirect("/activity-page")
@@ -94,40 +107,17 @@ def login_current_user():
             flash("The password is incorrect.")
     else:
         flash("That username doesn't exist!")
-        return redirect("/login-current-user")
+        return redirect("/register-new-user")
 
 @app.route('/activity-page')
 def display_activity():
     """ Activity Page """
 
-    token = session['spotify_token']
+    token = session.get('access_token')
+    auth_header = spotifyutils.auth_header(token)
+    s_user_id = spotifyutils.get_user_id(auth_header)
+    username = session['logged_user']['user_id']
 
-    # print(spotifyutils.search_playlists())
-    # print(spotifyutils.search_playlist_tracks())
-
-    user_id = spotifyutils.get_user_id()
-    # username = session['logged_user']
-    # auth_header = spotify.auth_header(token)
-
-    # name = request.args.get('name')
-
-    # session['name'] = name
-
-    # user = db.session.query(User).filter(User.id == username).one()
-    # user_tracks = user.tracks
-
-
-    # playlist_id 
-    # user_id =ForeignKey
-    # activity_id = ForeignKey
-    # playlist_name = 
-    # playlist_uri = 
-
-    # GOES INTO FUNCTION: auth_header, user_id, playlist_tracks, mood, playlist_name
-    headers = spotifyutils.auth_header(token)
-    print(headers)
-
-    print('****************')
     name = 'Workout'
     activity= 'workout'
 
@@ -136,17 +126,16 @@ def display_activity():
         'description': 'Activity generated playlist'
         }
 
-    USER_PLAYLIST_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'users', user_id, 'playlists')
+    USER_PLAYLIST_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'users', s_user_id, 'playlists')
     url = USER_PLAYLIST_ENDPOINT
-    print(url)
-    playlist_data = requests.post(url, data=json.dumps(payload), headers=headers).json()
+    playlist_data = requests.post(url, data=json.dumps(payload), headers=auth_header).json()
     playlist_id = playlist_data['id']
     playlist_uri = playlist_data['uri']
     print('playlist_id', playlist_id)
     print('playlist_uri', playlist_uri)
     session['playlist'] = playlist_id
 
-    new_playlist = Playlist(playlist_id=playlist_id, user_id=user_id, playlist_name=name, playlist_uri=playlist_uri)
+    new_playlist = Playlist(playlist_id=playlist_id, playlist_uri=playlist_uri, user_id=username, activity_id='workout')
     db.session.add(new_playlist)
     db.session.commit()
 

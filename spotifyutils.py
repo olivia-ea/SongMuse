@@ -84,26 +84,17 @@ def search_playlist_tracks():
 
     return track_name, track_artist, track_uri
     
-def get_user_id():
+def get_user_id(auth_header):
     """ Return users spotify id to add to database """ 
 
-    token = session['spotify_token']
-    headers = auth_header(token)
-
     request = f'{SPOTIFY_API_URL}/me'
-    user_info_data = requests.get(request, headers=headers).json()
+    user_info_data = requests.get(request, headers=auth_header).json()
     user_id = user_info_data['id']
 
     return user_id
 
 def create_playlist(auth_header, user_id, playlist_tracks, mood, playlist_name):
     """ Create playlist and add tracks to playlist. """
-
-    # playlist_id 
-    # user_id =ForeignKey
-    # activity_id = ForeignKey
-    # playlist_name = 
-    # playlist_uri = 
 
     # name = f'{playlist_name}'
 
@@ -151,12 +142,10 @@ def create_playlist(auth_header, user_id, playlist_tracks, mood, playlist_name):
 
 
 '''
-ENDPOINTS:
-Search for a playlist:   GET https://api.spotify.com/v1/search
-Create a playlist:  POST https://api.spotify.com/v1/playlists
-Add tracks to a playlist: POST https://api.spotify.com/v1/playlists/{playlist_id}/tracks
-Get the playlist: GET https://api.spotify.com/v1/playlists/{playlist_id}
-
+1. Search for 5 playlists 
+2. Get playlists' ID and randomly select 10 tracks
+3. Push all tracks to Song table
+4. 
 '''
 
 

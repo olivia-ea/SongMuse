@@ -8,6 +8,7 @@ class User(db.Model):
     __tablename__ = 'users'
 
     user_id = db.Column(db.String(50), primary_key=True)
+    password = db.Column(db.String(50), nullable=False)
     refresh_token = db.Column(db.String(500), nullable=False)
 
     def __repr__(self):
