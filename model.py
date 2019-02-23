@@ -7,7 +7,7 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
 
-    #auto increment but set to unique
+    #auto increment but set to unique; ADD ACCESS TOKEN
 
     user_id = db.Column(db.String(50), primary_key=True)
     password = db.Column(db.String(50), nullable=False)
@@ -16,18 +16,18 @@ class User(db.Model):
     def __repr__(self):
         return f'<User user_id={self.user_id} username={self.username}>'
 
-class Activity(db.Model):
-    __tablename__ = 'activities'
+# class Activity(db.Model):
+#     __tablename__ = 'activities'
 
-    # auto increment OR database constraint fix later
+#     # auto increment OR database constraint fix later
 
-    activity_id = db.Column(db.String(50), primary_key=True)
-    user_id = db.Column(db.String(50), db.ForeignKey('users.user_id'), nullable=False)
+#     activity_id = db.Column(db.String(50), primary_key=True)
+#     user_id = db.Column(db.String(50), db.ForeignKey('users.user_id'), nullable=False)
 
-    user = db.relationship('User', backref=db.backref('activities')) 
+#     user = db.relationship('User', backref=db.backref('activities')) 
 
-    def __repr__(self):
-        return f'<Activity activity_id={self.activity_id} activity_name={self.activity_name}>'
+#     def __repr__(self):
+#         return f'<Activity activity_id={self.activity_id} activity_name={self.activity_name}>'
 
 # class User_Activity(db.Model):
 #     __tablename__ = 'users_activities'
@@ -44,15 +44,14 @@ class Activity(db.Model):
 class Playlist(db.Model):
     __tablename__ = 'playlists'
 
-    # nullable=true if API called playlist vs generated playlist 
-
-    playlist_id = db.Column(db.String(100), primary_key=True)
-    playlist_uri = db.Column(db.String(100), nullable=False)
+    playlist_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    playlist_name = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.String(50), db.ForeignKey('users.user_id'), nullable=False)
-    activity_id = db.Column(db.String(50), db.ForeignKey('activities.activity_id'), nullable=False)
+    playlist_uri = db.Column(db.String(100), nullable=False)
+    # activity_id = db.Column(db.String(50), db.ForeignKey('activities.activity_id'), nullable=False)
 
     user = db.relationship('User', backref=db.backref('playlists')) 
-    activity = db.relationship('Activity', backref=db.backref('playlists')) 
+    # activity = db.relationship('Activity', backref=db.backref('playlists')) 
 
     def __repr__(self):
         return f'<Playlist playlist_id={self.playlist_id} playlist_name={self.playlist_name}>'
@@ -61,7 +60,7 @@ class Song(db.Model):
     __tablename__ = 'songs'
 
     song_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    song_name = db.Column(db.String(100), primary_key=True)
+    song_name = db.Column(db.String(100), nullable=False)
     artist_name = db.Column(db.String(100), nullable=False)
     song_uri = db.Column(db.String(100), nullable=False)
 
@@ -71,12 +70,12 @@ class Song(db.Model):
 class Playlist_Song(db.Model):
     __tablename__ = "playlists_songs"
 
-    playlist_song_id = db.Column(db.String(100), primary_key=True)
-    playlist_id = db.Column(db.String(100), db.ForeignKey('playlists.playlist_id'))
-    # song_id = db.Column(db.Integer, db.ForeignKey('songs.song_id'))
+    playlist_song_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    playlist_id = db.Column(db.Integer, db.ForeignKey('playlists.playlist_id'))
+    song_id = db.Column(db.Integer, db.ForeignKey('songs.song_id'))
 
     playlist = db.relationship('Playlist', backref=db.backref('playlists_songs')) 
-    # song = db.relationship('Song', backref=db.backref('playlists_songs')) 
+    song = db.relationship('Song', backref=db.backref('playlists_songs')) 
 
     def __repr__(self):
         return f'<Playlist_Song playlist_song_id={self.playlist_song_id}>'
@@ -94,6 +93,6 @@ if __name__ == '__main__':
     from server import app
 
     connect_to_db(app)
-    db.create_all( )
+    db.create_all()
     print('Connected to DB.')
 

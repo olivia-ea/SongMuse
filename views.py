@@ -7,7 +7,8 @@ import requests
 
 import spotifyutils
 from settings import *
-from model import db, connect_to_db, User, Activity, Playlist, Song, Playlist_Song 
+from model import db, connect_to_db, User, Playlist, Song, Playlist_Song 
+# DELETED ACTIVITY FROM MODEL BE SURE TO ADD BACK IN
 
 app = Flask(__name__)
 app.jinja_env.undefinded = StrictUndefined
@@ -35,7 +36,7 @@ def spotify_callback():
     session['refresh_token'] = spotify_response_data.get('refresh_token')
 
     '''
-    print('spotify_response_data', spotify_response_data)
+    print(spotify_response_data)
 
     {'access_token': 'BQDgSUqcuazClu-tfUSCKSwpKBeuwLRNTdW76aicr470cBMJL3KRK2J_yN6TahL
     jpvwa5GnUK3CuPQlctO-p7B41pVVCPkRPwRft9jowupGrOwbzevEJCpaf2IID3zpmiGnvm1ro9N7MW4f
@@ -73,8 +74,7 @@ def register_process():
         db.session.commit()
 
         user_id = new_user.user_id
-        session['logged_user'] = { 'username': username,
-                                    'password': password}
+        session['logged_user'] = {'username': username}
 
         flash(f"User {username} added.")
 
@@ -97,9 +97,7 @@ def login_current_user():
     if user:
         if user.password == password:
             user_id = user.user_id
-            session['logged_user'] = {  'user_id': user_id,
-                                        'password': password,
-                                        'refresh_token': session.get('refresh_token')}
+            session['logged_user'] = {'username': user_id}
 
             flash("You've successfully logged in!")
             return redirect("/activity-page")
@@ -115,34 +113,15 @@ def display_activity():
 
     token = session.get('access_token')
     auth_header = spotifyutils.auth_header(token)
+    spotify_user_id = spotifyutils.get_user_id(auth_header)
+    playlist_name = 'Workout'
 
-    print(spotifyutils.search_playlists())
-    print(spotifyutils.search_playlist_tracks())
-    spotifyutils.search_playlist_tracks()
 
-    # s_user_id = spotifyutils.get_user_id(auth_header)
-    # username = session['logged_user']['user_id']
 
-    # name = 'Workout'
-    # activity= 'workout'
+    playlists_ids = (spotifyutils.search_playlists('workout'))
+    spotifyutils.search_playlists_tracks(playlists_ids)
+    spotifyutils.create_playlist(auth_header, spotify_user_id, playlist_name)
 
-    # payload = { 
-    #     'name' : name,
-    #     'description': 'Activity generated playlist'
-    #     }
-
-    # USER_PLAYLIST_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'users', s_user_id, 'playlists')
-    # url = USER_PLAYLIST_ENDPOINT
-    # playlist_data = requests.post(url, data=json.dumps(payload), headers=auth_header).json()
-    # playlist_id = playlist_data['id']
-    # playlist_uri = playlist_data['uri']
-    # print('playlist_id', playlist_id)
-    # print('playlist_uri', playlist_uri)
-    # session['playlist'] = playlist_id
-
-    # new_playlist = Playlist(playlist_id=playlist_id, playlist_uri=playlist_uri, user_id=username, activity_id='workout')
-    # db.session.add(new_playlist)
-    # db.session.commit()
 
     return render_template('activity-page.html')
 
