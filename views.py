@@ -1,14 +1,13 @@
 """API requests and routes"""
 
-from flask import Flask, request, redirect, render_template, flash, session, jsonify, json
+from flask import Flask, request, redirect, render_template, flash, session, jsonify, json, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
 import requests
 
 import spotifyutils
 from settings import *
-from model import db, connect_to_db, User, Playlist, Song, Playlist_Song 
-# DELETED ACTIVITY FROM MODEL BE SURE TO ADD BACK IN
+from model import db, connect_to_db, User, Playlist, Song, Activity, Playlist_Song 
 
 app = Flask(__name__)
 app.jinja_env.undefinded = StrictUndefined
@@ -107,23 +106,43 @@ def login_current_user():
         flash("That username doesn't exist!")
         return redirect("/register-new-user")
 
-@app.route('/activity-page')
+@app.route('/activity-page', methods=['GET'])
+def route_activity():
+
+    access_token = session.get('access_token')
+
+    return render_template('activity-page.html', auth_header=access_token)
+
+@app.route('/cont-activity-page', methods=["POST"])
 def display_activity():
     """ Activity Page """
 
+    activity_query = request.form["activity_query"]
+    playlist_name = request.form["playlist_name"]
+
+    user_id = session.get('logged_user')['username']
+
+    new_activity = Activity(activity_name=activity_query, user_id=user_id)
+    db.session.add(new_activity)
+    db.session.commit()
+    activity_id = new_activity.activity_id
+
     token = session.get('access_token')
-    auth_header = spotifyutils.auth_header(token)
+    session['auth_header'] = spotifyutils.auth_header(token)
+
+    auth_header = session['auth_header'] 
     spotify_user_id = spotifyutils.get_user_id(auth_header)
-    playlist_name = 'Workout'
 
+    playlists_ids = (spotifyutils.search_playlists(activity_query))
+    playlist_id = spotifyutils.create_playlist(auth_header, spotify_user_id, playlist_name, activity_id)
+    spotifyutils.search_playlists_tracks(playlists_ids, playlist_id)
 
+    '''
+    activity = Activity.query.order_by('activity_name').filter(Activity.activity_name.ilike('%{}%'.format(search_str))).all()
+    pre-seed activity database to avoid errors of non-existant activities 
 
-    playlists_ids = (spotifyutils.search_playlists('workout'))
-    spotifyutils.search_playlists_tracks(playlists_ids)
-    spotifyutils.create_playlist(auth_header, spotify_user_id, playlist_name)
-
-
-    return render_template('activity-page.html')
+    '''
+    return redirect("/activity-page")
 
 @app.route('/logout')
 def logout():

@@ -1,49 +1,47 @@
 {% extends 'base.html' %}
 {% block content %}
 
-  <div>Select an activity!</div>
+  <div>Input an activity to generate a playlist!</div>
 
-  <select>
-    <option value="chill">Chill</option>
-    <option value="study">Study</option>
-    <option value="workout">Workout</option>
-  </select>
 
-  <div>
+
+<form id="activity-form" action="/cont-activity-page" method="POST">
+    Activity name: <input type="text" name="activity_query">
+    <br>
+    Playlist name: <input type="text" name="playlist_name">
     <input type="submit" value="Submit" id='search-button'>
-  </div>
+</form>
+<meta id="auth_header" data-name="{{ auth_header }}" data-other="{{other}}">
 
-
-<script>
-
-    const play = ({
+    <script>
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            const play = ({
       spotify_uri,
       playerInstance: {
         _options: {
-          getOAuthToken,
-          id
+          // getOAuthToken,
+          // id
         }
       }
     }) => {
-      getOAuthToken(access_token => {
-        fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+      // getOAuthToken(access_token => {
+        fetch(`https://api.spotify.com/v1/me/player/play?`, {
           method: 'PUT',
-          body: JSON.stringify({ uris: [spotify_uri] }),
+          body: JSON.stringify({  "context_uri": "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr" }),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': 'Bearer ' + $('#auth_header').data().name
           },
         });
-      });
+      // });
     };
 
     play({
       playerInstance: new Spotify.Player({ name: "..." }),
-      spotify_uri: 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr',
+      spotify_uri: 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr', 
     });
-
-</script>
-
+    };
+    </script>
 
 <!--     <script>
     

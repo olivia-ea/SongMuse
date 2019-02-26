@@ -7,8 +7,6 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
 
-    #auto increment but set to unique; ADD ACCESS TOKEN
-
     user_id = db.Column(db.String(50), primary_key=True)
     password = db.Column(db.String(50), nullable=False)
     refresh_token = db.Column(db.String(500), nullable=False)
@@ -16,30 +14,18 @@ class User(db.Model):
     def __repr__(self):
         return f'<User user_id={self.user_id} username={self.username}>'
 
-# class Activity(db.Model):
-#     __tablename__ = 'activities'
+class Activity(db.Model):
+    __tablename__ = 'activities'
 
-#     # auto increment OR database constraint fix later
+    activity_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    activity_name = db.Column(db.String(50), nullable=False)
+    user_id = db.Column(db.String(50), db.ForeignKey('users.user_id'), nullable=False)
 
-#     activity_id = db.Column(db.String(50), primary_key=True)
-#     user_id = db.Column(db.String(50), db.ForeignKey('users.user_id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('activities')) 
 
-#     user = db.relationship('User', backref=db.backref('activities')) 
+    def __repr__(self):
+        return f'<Activity activity_id={self.activity_id} activity_name={self.activity_name}>'
 
-#     def __repr__(self):
-#         return f'<Activity activity_id={self.activity_id} activity_name={self.activity_name}>'
-
-# class User_Activity(db.Model):
-#     __tablename__ = 'users_activities'
-
-#     user_activity_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
-#     activity_id = db.Column(db.Integer, db.ForeignKey('activities.activity_id'), index=True)
-
-#     user = db.relationship('User', seconday='activities', backref=db.backref('users_activities'))
-
-#     def __repr__(self):
-#         return f'<User_Activity user_activity_id={self.user_activity_id}>'
 
 class Playlist(db.Model):
     __tablename__ = 'playlists'
@@ -48,10 +34,10 @@ class Playlist(db.Model):
     playlist_name = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.String(50), db.ForeignKey('users.user_id'), nullable=False)
     playlist_uri = db.Column(db.String(100), nullable=False)
-    # activity_id = db.Column(db.String(50), db.ForeignKey('activities.activity_id'), nullable=False)
+    activity_id = db.Column(db.Integer, db.ForeignKey('activities.activity_id'), nullable=False)
 
     user = db.relationship('User', backref=db.backref('playlists')) 
-    # activity = db.relationship('Activity', backref=db.backref('playlists')) 
+    activity = db.relationship('Activity', backref=db.backref('playlists')) 
 
     def __repr__(self):
         return f'<Playlist playlist_id={self.playlist_id} playlist_name={self.playlist_name}>'
