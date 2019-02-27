@@ -117,27 +117,24 @@ def search_playlists_tracks(spotify_playlists_ids, playlist_id):
 def seed_spotify_playlist(auth_header, playlist_id):
     """ Queries to playlists_songs table to add songs from given playlist_uri 
     to user's spotify account. """
-    token = session.get('access_token')
 
-    playlist = Playlist.query.filter_by(playlist_id=playlist_id).one()
+    playlist_obj = Playlist.query.filter_by(playlist_id=playlist_id).one()
+    full_uri = playlist_obj.playlist_uri 
+    parse_uri = full_uri.split(':')
+    playlist_uri = parse_uri[4]
 
     queries = Playlist_Song.query.filter_by(playlist_id=playlist_id).all()
 
+    query_lst = []
     for query in queries:
-        PLAYLIST_TRACK_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'playlists', playlist.playlist_uri, 'tracks?uri=' + query.song.song_uri)
-        requests.post(PLAYLIST_TRACK_ENDPOINT, headers=auth_header).json()
+        query_lst.append(query.song.song_uri)
 
+    uri_string = ','.join(query_lst)
+        
+    PLAYLIST_TRACK_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'playlists', playlist_uri, 'tracks?uris=' + uri_string)
+    requests.post(PLAYLIST_TRACK_ENDPOINT, headers=auth_header).json()
+        
 
-# "https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n/tracks?uris=spoti
-# fy%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh%2Cspotify%3Atrack%3A1301WleyT98MSxVHPZCA6M"
-#  -H "Accept: application/json" -H "Content-Type: application/json" -H "Authoriza
-#  tion: Bearer BQA5wqZVoVAE97FnRmtI6V5xyHWIZIVk_AhXSHz2c0WAFADG2cRbDMiV2Id-MZUEQc
-#  88znG0jRwTBsI4s429uh0XMlCHfjQt2WqLN502aEuvEN0Zf_cGce_FzQKNNsjOdaXDj0ckuV0aedCQ-
-#  VbCJYdzNf5-j13YRFBopDFW0w8mxqrPNED5-RD5JabHqih2yMSw2avtugF_dTIWOC9a"
-   
-# spotify:user:ea.olivia:playlist:0lwpuc5gkYYzu9OIDvOD8M
-# PARSE 0lwpuc5gkYYzu9OIDvOD8M
-# FORMAT playlist_uri
 
 
 
