@@ -9,6 +9,7 @@ class User(db.Model):
 
     user_id = db.Column(db.String(50), primary_key=True)
     password = db.Column(db.String(50), nullable=False)
+    auth_token = db.Column(db.String(500), nullable=False)
     refresh_token = db.Column(db.String(500), nullable=False)
 
     def __repr__(self):
@@ -57,11 +58,13 @@ class Playlist_Song(db.Model):
     __tablename__ = "playlists_songs"
 
     playlist_song_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    playlist_id = db.Column(db.Integer, db.ForeignKey('playlists.playlist_id'))
-    song_id = db.Column(db.Integer, db.ForeignKey('songs.song_id'))
+    playlist_id = db.Column(db.Integer, db.ForeignKey('playlists.playlist_id'), nullable=False)
+    song_id = db.Column(db.Integer, db.ForeignKey('songs.song_id'), nullable=False)
 
     playlist = db.relationship('Playlist', backref=db.backref('playlists_songs')) 
     song = db.relationship('Song', backref=db.backref('playlists_songs')) 
+
+    # db.session.query(Playlist_Song).filter(Playlist_Song.playlist_id ==)
 
     def __repr__(self):
         return f'<Playlist_Song playlist_song_id={self.playlist_song_id}>'

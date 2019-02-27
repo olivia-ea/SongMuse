@@ -38,23 +38,22 @@ def get_access_token():
     return post_request.json()
 
 def auth_header(token):
-    """ Returns Spotify's authorization header.
-    
-    Args: access_token is returned from get_access_token().
-    """
+    """ Returns Spotify's authorization header. """
 
     return {"Authorization" : f"Bearer {token}"}
 
 def get_user_id(auth_header):
-    """ Return users spotify id to add to database """ 
+    """ Return user's spotify ID.  """ 
 
-    request = f'{SPOTIFY_API_URL}/me'
+    request = "{}/{}".format(SPOTIFY_API_URL, 'me')
     user_info_data = requests.get(request, headers=auth_header).json()
     user_id = user_info_data['id']
 
     return user_id
 
 def create_playlist(auth_header, spotify_user_id, playlist_name, activity_id):
+    """ Creates playlist locally and on user's Spotify account. """
+
     payload = { 
         'name' : playlist_name
         # 'description': description
@@ -77,7 +76,8 @@ def create_playlist(auth_header, spotify_user_id, playlist_name, activity_id):
     return playlist_id
 
 def search_playlists(activity_query):
-    """ Finds the playlist id numbers from the API response. """ 
+    """ Searches Spotify for playlists based on user's activity-related query.
+    Returns list of playlist id numbers from API response. """ 
 
     PLAYLIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, "search?q="+ activity_query +"&type=playlist&limit=5&offset=5")
     token = session.get('access_token')
@@ -92,8 +92,8 @@ def search_playlists(activity_query):
 
 def search_playlists_tracks(spotify_playlists_ids, playlist_id):
     """ Finds the tracks based off the id number. 
-        Adds songs to songs table. 
-        Add songs and playlist id to playlists_songs table. """
+        Adds songs to local songs table. 
+        Add songs and playlist id to local playlists_songs table. """
 
     playlist_1, playlist_2, playlist_3, playlist_4, playlist_5 = spotify_playlists_ids
 
@@ -114,47 +114,30 @@ def search_playlists_tracks(spotify_playlists_ids, playlist_id):
 
     return ('Added to DB.')
 
-def seed_playlist(auth_header, playlist_id):
+def seed_spotify_playlist(auth_header, playlist_id):
+    """ Queries to playlists_songs table to add songs from given playlist_uri 
+    to user's spotify account. """
+    token = session.get('access_token')
 
-    # query_track_uris = playlists_songs.query.filter_by(playlist_id == playlist_id).all()
+    playlist = Playlist.query.filter_by(playlist_id=playlist_id).one()
 
-    # track_uris = '%2C'.join(query_track_uris)
+    queries = Playlist_Song.query.filter_by(playlist_id=playlist_id).all()
 
-    # PLAYLIST_TRACK_ENDPOINT = f'{SPOTIFY_API_URL}/playlists/{playlist_id}/tracks?uris={track_uris}'
-
-    # # tracks_added = requests.post(add_tracks, headers=auth_header).json()
-    # # tracks_added = post_spotify_data(add_tracks, auth_header)
-    pass
+    for query in queries:
+        PLAYLIST_TRACK_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'playlists', playlist.playlist_uri, 'tracks?uri=' + query.song.song_uri)
+        requests.post(PLAYLIST_TRACK_ENDPOINT, headers=auth_header).json()
 
 
-
-
-    """ Create playlist and add tracks to playlist. """
-
-    '''
-    {'collaborative': False, 'description': 'Activity generated playlist', 
-    'external_urls': {'spotify': 'https://open.spotify.com/playlist/6siGcW66hhE
-    FVN18L7rY3o'}, 'followers': {'href': None, 'total': 0}, 'href': 'https://ap
-    i.spotify.com/v1/playlists/6siGcW66hhEFVN18L7rY3o', 'id': '6siGcW66hhEFVN18L
-    7rY3o', 'images': [], 'name': 'Workout', 'owner': {'display_name': 'ea.olivi
-    a', 'external_urls': {'spotify': 'https://open.spotify.com/user/ea.olivia'}, 
-    'href': 'https://api.spotify.com/v1/users/ea.olivia', 'id': 'ea.olivia', 't
-    ype': 'user', 'uri': 'spotify:user:ea.olivia'}, 'primary_color': None, 'pub
-    lic': True, 'snapshot_id': 'MSxmOWEyZWU5NzRiNjlmMzEwYjM1YmQ0MDAyNDA3MmNkM2
-    U5MWQzZjMy', 'tracks': {'href': 'https://api.spotify.com/v1/playlists/6si
-    GcW66hhEFVN18L7rY3o/tracks', 'items': [], 'limit': 100, 'next': None, 'off
-    set': 0, 'previous': None, 'total': 0}, 'type': 'playlist', 'uri': 'spotify
-    :user:ea.olivia:playlist:6siGcW66hhEFVN18L7rY3o'}
-    '''
+# "https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n/tracks?uris=spoti
+# fy%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh%2Cspotify%3Atrack%3A1301WleyT98MSxVHPZCA6M"
+#  -H "Accept: application/json" -H "Content-Type: application/json" -H "Authoriza
+#  tion: Bearer BQA5wqZVoVAE97FnRmtI6V5xyHWIZIVk_AhXSHz2c0WAFADG2cRbDMiV2Id-MZUEQc
+#  88znG0jRwTBsI4s429uh0XMlCHfjQt2WqLN502aEuvEN0Zf_cGce_FzQKNNsjOdaXDj0ckuV0aedCQ-
+#  VbCJYdzNf5-j13YRFBopDFW0w8mxqrPNED5-RD5JabHqih2yMSw2avtugF_dTIWOC9a"
    
-
-
-    # for track in playlist_songs:
-    #     playlist_song_exist = db.session.query(Playlist_Song).filter(Playlist_Song.playlist_id == playlist_id, PlaylistTrack.track_uri == track).all()
-    #     if not playlist_track_exist:
-    #         new_playlist_song = Playlist_Song(playlist_id = playlist_id, song_uri = track)
-    #         db.session.add(new_playlist_song)
-    #     db.session.commit()
+# spotify:user:ea.olivia:playlist:0lwpuc5gkYYzu9OIDvOD8M
+# PARSE 0lwpuc5gkYYzu9OIDvOD8M
+# FORMAT playlist_uri
 
 
 

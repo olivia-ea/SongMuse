@@ -67,7 +67,7 @@ def register_process():
         flash("That username is already taken!")
         return redirect("/login-current-user")
     else:
-        new_user = User(user_id=username, password=password, refresh_token=session.get('refresh_token'))
+        new_user = User(user_id=username, password=password, auth_token=session.get('access_token'), refresh_token=session.get('refresh_token'))
         
         db.session.add(new_user)
         db.session.commit()
@@ -136,6 +136,7 @@ def display_activity():
     playlists_ids = (spotifyutils.search_playlists(activity_query))
     playlist_id = spotifyutils.create_playlist(auth_header, spotify_user_id, playlist_name, activity_id)
     spotifyutils.search_playlists_tracks(playlists_ids, playlist_id)
+    spotifyutils.seed_spotify_playlist(auth_header, playlist_id)
 
     '''
     activity = Activity.query.order_by('activity_name').filter(Activity.activity_name.ilike('%{}%'.format(search_str))).all()
