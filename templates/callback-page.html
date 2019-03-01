@@ -4,15 +4,21 @@
 
     <label>Create new account</label>
     <div>  
-        <button id='new-user'>submit</button>
+        <button id='new-user' onclick="location.href = '/register-new-user'">submit</button>
     </div>
 
     <label>Login</label>
     <div>  
-        <button id='returning-user'>submit</button>
+        <button id='returning-user' onclick="location.href = '/login-current-user'">submit</button>
     </div>
 
-    <script>
+
+
+
+
+
+
+<!--     <script>
     
         function createNewUser(evt) {
             window.location.replace("/register-new-user");
@@ -26,6 +32,6 @@
 
         $('#returning-user').on('click', loginExistingUser);
 
-    </script>
+    </script> -->
 
 {% endblock %}

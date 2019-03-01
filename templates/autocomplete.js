@@ -1,9 +1,9 @@
 <script>
   $( function() {
     var availableTags = [
-      "Workout",
-      "Yoga", 
-      "Beach"
+      "workout",
+      "yoga", 
+      "run"
     ];
     $( "#activity_query" ).autocomplete({
       source: availableTags

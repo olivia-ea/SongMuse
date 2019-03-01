@@ -109,9 +109,11 @@ def login_current_user():
 @app.route('/activity-page', methods=['GET'])
 def route_activity():
 
-    access_token = session.get('access_token')
+    user_id = session.get('logged_user')['username']
 
-    return render_template('activity-page.html', auth_header=access_token)
+    user_playlists = spotifyutils.users_playlists(user_id)
+
+    return render_template('activity-page.html', user_playlists=user_playlists)
 
 @app.route('/cont-activity-page', methods=["POST"])
 def display_activity():
@@ -119,31 +121,44 @@ def display_activity():
 
     activity_query = request.form["activity_query"]
     playlist_name = request.form["playlist_name"]
+    # Processes form data from HTML
 
     user_id = session.get('logged_user')['username']
+    token = session.get('access_token')
+    # Important variables
 
     new_activity = Activity(activity_name=activity_query, user_id=user_id)
     db.session.add(new_activity)
     db.session.commit()
     activity_id = new_activity.activity_id
+    # Seed activities table 
 
-    token = session.get('access_token')
     session['auth_header'] = spotifyutils.auth_header(token)
-
     auth_header = session['auth_header'] 
-    spotify_user_id = spotifyutils.get_user_id(auth_header)
+    # Generates authorization headers
+    
+    spotify_user_id = spotifyutils.get_spotify_user_id(auth_header)
+    # Find logged user's spotify account
 
-    playlists_ids = (spotifyutils.search_playlists(activity_query))
     playlist_id = spotifyutils.create_playlist(auth_header, spotify_user_id, playlist_name, activity_id)
+    # Creates empty playlist that is stored as a playlist object locally and pushes to user's Spotify account    
+
+    playlists_ids = spotifyutils.search_playlists(activity_query)
+    # API call to query Spotify's playlists based off user's inputted activity 
+    # returns list of playlist uris; NONE ARE STORED
+    
     spotifyutils.search_playlists_tracks(playlists_ids, playlist_id)
-    spotifyutils.seed_spotify_playlist(auth_header, playlist_id)
+    # API call to respective playlist ids; seeds locally
 
-    '''
-    activity = Activity.query.order_by('activity_name').filter(Activity.activity_name.ilike('%{}%'.format(search_str))).all()
-    pre-seed activity database to avoid errors of non-existant activities 
+    playlist_uri = spotifyutils.seed_spotify_playlist(auth_header, playlist_id)
+    # Pushes songs to playlist on user's Spotify account
 
-    '''
-    return redirect("/activity-page")
+    playlist_view_src = "https://open.spotify.com/embed/user/"+spotify_user_id+"/playlist/"+playlist_uri
+    # iframe/spotify widget passed into HTML via jinja 
+
+    user_playlists = spotifyutils.users_playlists(user_id)
+
+    return render_template('activity-page.html', playlist_view_src=playlist_view_src, user_playlists=user_playlists)
 
 @app.route('/logout')
 def logout():

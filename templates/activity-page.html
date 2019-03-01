@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-  <div>Input an activity to generate a playlist!</div>
+<div>Input an activity to generate a playlist!</div>
 
-
+<br>
 
 <form id="activity-form" action="/cont-activity-page" method="POST">
     Activity name: <input type="text" name="activity_query">
@@ -11,6 +11,74 @@
     Playlist name: <input type="text" name="playlist_name">
     <input type="submit" value="Submit" id='search-button'>
 </form>
+
+<br>
+<br>
+
+<div id="view-playlist">
+    <iframe data src="{{ playlist_view_src }}" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+</div>
+
+<div style="height:200px; width:200px;overflow-y:auto;">
+  <table>
+    <tr>
+        <th>PREVIOUS PLAYLISTS</th>
+    </tr>
+    {% for playlist in user_playlists: %}
+    <tr>
+        <td> {{ playlist }}</td>
+    </tr> 
+    {% endfor %}
+  </table>
+</div>
+
+<!-- <td id= {{ playlist.uri }}> -->
+
+
+<!-- <script>
+  $('#view-playlist').on('submit',() => {
+    $('#view-playlist').attr('src',
+        'http://cute-n-tiny.com/wp-content/uploads/2010/10/dog-lobster-halloween-costume.jpg');
+    });    
+
+</script>>
+ -->
+<!-- 
+<script>
+    function displayPlaylist(evt) => {
+        
+        let iframe = $("#view-playlist");
+        iframe.attr("src", iframe.data("src");
+    }
+
+    $('#search-button').on('submit', (evt) =>{
+        evt.preventDefault()
+    }
+
+    $('#search-button').on('submit', displayPlaylist);  
+
+</script>
+ -->
+
+<!-- 
+
+how to populate empty div container (div id="view-playlist") with iframe. will there be an issue if the page just redirects? What
+is the most direct design/workflow?
+
+will there be an issue with ajax request if processing multiple API 
+calls and seeded local database/spotify playlist?
+
+issue with passing in var to iframe src tag? confused with where to pass in var if page is redirecting instead of rendering template? -->
+
+
+
+
+
+
+<!-- <iframe src="https://open.spotify.com/embed/user/ea.olivia/playlist/3X7ElLuqbR3wb32dUlemhm" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe> -->
+
+
+<!-- **************THIS WORKS***************
 <meta id="auth_header" data-name="{{ auth_header }}" data-other="{{other}}">
 
     <script>
@@ -42,6 +110,8 @@
     });
     };
     </script>
+**************THIS WORKS***************
+ -->
 
 <!--     <script>
     
@@ -80,17 +150,17 @@
 <br>
 <br>
 <div>  
-    <button id='logout-user'>logout</button>
+    <button id='logout-user' onclick="location.href = '/logout'">logout</button>
 </div>
 
 
-<script>
+<!-- <script>
     function logoutExistingUser(evt) {
         window.location.replace("/logout");
     }
 
     $('#logout-user').on('click', logoutExistingUser);
-</script>
+</script> -->
 {% endblock %}
 
 <!-- $("button").click(function(){

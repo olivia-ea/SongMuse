@@ -42,21 +42,20 @@ def auth_header(token):
 
     return {"Authorization" : f"Bearer {token}"}
 
-def get_user_id(auth_header):
+def get_spotify_user_id(auth_header):
     """ Return user's spotify ID.  """ 
 
     request = "{}/{}".format(SPOTIFY_API_URL, 'me')
-    user_info_data = requests.get(request, headers=auth_header).json()
-    user_id = user_info_data['id']
+    user_info = requests.get(request, headers=auth_header).json()
+    spotify_user_id = user_info['id']
 
-    return user_id
+    return spotify_user_id
 
 def create_playlist(auth_header, spotify_user_id, playlist_name, activity_id):
-    """ Creates playlist locally and on user's Spotify account. """
+    """ Creates playlist on user's Spotify account and local database. """
 
     payload = { 
         'name' : playlist_name
-        # 'description': description
         }
 
     USER_PLAYLIST_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'users', spotify_user_id, 'playlists')
@@ -75,7 +74,7 @@ def create_playlist(auth_header, spotify_user_id, playlist_name, activity_id):
     
     return playlist_id
 
-def search_playlists(activity_query):
+def search_spotify_playlists(activity_query):
     """ Searches Spotify for playlists based on user's activity-related query.
     Returns list of playlist id numbers from API response. """ 
 
@@ -121,7 +120,7 @@ def seed_spotify_playlist(auth_header, playlist_id):
     playlist_obj = Playlist.query.filter_by(playlist_id=playlist_id).one()
     full_uri = playlist_obj.playlist_uri 
     parse_uri = full_uri.split(':')
-    playlist_uri = parse_uri[4]
+    playlist_uri = parse_uri[2]
 
     queries = Playlist_Song.query.filter_by(playlist_id=playlist_id).all()
 
@@ -134,10 +133,20 @@ def seed_spotify_playlist(auth_header, playlist_id):
     PLAYLIST_TRACK_ENDPOINT = "{}/{}/{}/{}".format(SPOTIFY_API_URL, 'playlists', playlist_uri, 'tracks?uris=' + uri_string)
     requests.post(PLAYLIST_TRACK_ENDPOINT, headers=auth_header).json()
         
+    return playlist_uri
+
+def users_playlists(user_id):
+    """ Returns a list of user's previously generate playlists.  """
+
+    all_local_playlists = Playlist.query.filter_by(user_id = user_id).all()
+
+    user_playlists = []
+    for playlist in all_local_playlists:
+        user_playlists.append(str(playlist.playlist_name))
+
+    return user_playlists
 
 
 
 
-
-
-
+ 

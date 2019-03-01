@@ -64,8 +64,6 @@ class Playlist_Song(db.Model):
     playlist = db.relationship('Playlist', backref=db.backref('playlists_songs')) 
     song = db.relationship('Song', backref=db.backref('playlists_songs')) 
 
-    # db.session.query(Playlist_Song).filter(Playlist_Song.playlist_id ==)
-
     def __repr__(self):
         return f'<Playlist_Song playlist_song_id={self.playlist_song_id}>'
 
