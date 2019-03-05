@@ -18,7 +18,7 @@ def generate_auth_url():
 
     return spotify_auth_url
 
-def get_access_token():
+def get_auth_token():
     """ Returns authorization token from Spotify. 
     Used in '/spotify-callback' route. """
 
@@ -29,6 +29,21 @@ def get_access_token():
         "code": str(auth_code),
         "redirect_uri": SPOTIFY_REDIRECT_URI
     }
+
+    base64encoded = base64.b64encode(("{}:{}".format(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)).encode())
+    headers = {"Authorization": "Basic {}".format(base64encoded.decode())}
+
+    post_request = requests.post(SPOTIFY_TOKEN_URL, data=code_payload, headers=headers)
+
+    return post_request.json()
+
+def get_new_auth_token(refresh_token):
+    """ Takes in refresh token from exisiting user to generate a new authorization token. """
+
+    code_payload = {
+            'grant_type': 'refresh_token',
+            'refresh_token': refresh_token
+        }
 
     base64encoded = base64.b64encode(("{}:{}".format(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)).encode())
     headers = {"Authorization": "Basic {}".format(base64encoded.decode())}
@@ -147,6 +162,14 @@ def users_playlists(user_id):
     return user_playlists
 
 
+def playlist_src(spotify_user_id, playlist_name):
 
+    full_uri = Playlist.query.filter_by(playlist_name=playlist_name).first().playlist_uri
+    parse_uri = full_uri.split(':')
+    playlist_uri = parse_uri[2]
+
+    playlist_view_src = "https://open.spotify.com/embed/user/" + spotify_user_id + "/playlist/" + playlist_uri
+
+    return playlist_view_src
 
  

@@ -13,7 +13,7 @@ class User(db.Model):
     refresh_token = db.Column(db.String(500), nullable=False)
 
     def __repr__(self):
-        return f'<User user_id={self.user_id} username={self.username}>'
+        return f'<User user_id={self.user_id}>'
 
 class Activity(db.Model):
     __tablename__ = 'activities'

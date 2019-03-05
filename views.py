@@ -30,7 +30,7 @@ def spotify_login():
 @app.route('/spotify-callback')
 def spotify_callback():
 
-    spotify_response_data = spotifyutils.get_access_token()
+    spotify_response_data = spotifyutils.get_auth_token()
     session['access_token'] = spotify_response_data.get('access_token')
     session['refresh_token'] = spotify_response_data.get('refresh_token')
 
@@ -47,7 +47,7 @@ def spotify_callback():
     d-private'}
     '''
 
-    return render_template('callback-page.html')
+    return redirect('/register-new-user')
 
 @app.route('/register-new-user', methods=['GET'])
 def register_new_user():
@@ -97,7 +97,9 @@ def login_current_user():
         if user.password == password:
             user_id = user.user_id
             session['logged_user'] = {'username': user_id}
-
+            refresh_token = User.query.filter_by(user_id=user_id).first().refresh_token
+            spotify_response_data = spotifyutils.get_new_auth_token(refresh_token)
+            session['access_token'] = spotify_response_data.get('access_token')
             flash("You've successfully logged in!")
             return redirect("/activity-page")
         else:
@@ -124,8 +126,8 @@ def display_activity():
     # Processes form data from HTML
 
     user_id = session.get('logged_user')['username']
+     
     token = session.get('access_token')
-    # Important variables
 
     new_activity = Activity(activity_name=activity_query, user_id=user_id)
     db.session.add(new_activity)
@@ -136,14 +138,14 @@ def display_activity():
     session['auth_header'] = spotifyutils.auth_header(token)
     auth_header = session['auth_header'] 
     # Generates authorization headers
-    
+
     spotify_user_id = spotifyutils.get_spotify_user_id(auth_header)
     # Find logged user's spotify account
 
     playlist_id = spotifyutils.create_playlist(auth_header, spotify_user_id, playlist_name, activity_id)
     # Creates empty playlist that is stored as a playlist object locally and pushes to user's Spotify account    
 
-    playlists_ids = spotifyutils.search_playlists(activity_query)
+    playlists_ids = spotifyutils.search_spotify_playlists(activity_query)
     # API call to query Spotify's playlists based off user's inputted activity 
     # returns list of playlist uris; NONE ARE STORED
     
@@ -164,8 +166,8 @@ def display_activity():
 def logout():
     """Log out"""
 
-    del session["logged_user"]
-    del session['spotify_token']
+    # del session["logged_user"]
+    session.clear()
     flash("Logged Out.")
 
     return redirect("/")

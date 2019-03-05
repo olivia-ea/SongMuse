@@ -32,17 +32,22 @@
   </table>
 </div>
 
-<!-- <td id= {{ playlist.uri }}> -->
-
-
 <!-- <script>
   $('#view-playlist').on('submit',() => {
-    $('#view-playlist').attr('src',
-        'http://cute-n-tiny.com/wp-content/uploads/2010/10/dog-lobster-halloween-costume.jpg');
+    $('#view-playlist').toggle();
     });    
 
-</script>>
- -->
+</script>> -->
+
+<!-- <script>
+$.ajax('activity-page.html', {
+  success: function(response) {
+    $('.NAMEOFCLASS').html(response);
+  }
+});
+</script> -->
+
+
 <!-- 
 <script>
     function displayPlaylist(evt) => {
