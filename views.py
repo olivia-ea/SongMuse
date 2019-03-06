@@ -117,7 +117,7 @@ def route_activity():
 
     return render_template('activity-page.html', user_playlists=user_playlists)
 
-@app.route('/cont-activity-page', methods=["POST"])
+@app.route('/activity-page-cont', methods=['POST'])
 def display_activity():
     """ Activity Page """
 
@@ -155,18 +155,29 @@ def display_activity():
     playlist_uri = spotifyutils.seed_spotify_playlist(auth_header, playlist_id)
     # Pushes songs to playlist on user's Spotify account
 
-    playlist_view_src = "https://open.spotify.com/embed/user/"+spotify_user_id+"/playlist/"+playlist_uri
+    playlist_view_src = {'playlist':"https://open.spotify.com/embed/user/"+spotify_user_id+"/playlist/"+playlist_uri}
     # iframe/spotify widget passed into HTML via jinja 
 
     user_playlists = spotifyutils.users_playlists(user_id)
 
-    return render_template('activity-page.html', playlist_view_src=playlist_view_src, user_playlists=user_playlists)
+    return jsonify(playlist_view_src)
+
+@app.route('/play-prev-playlist')
+def play_previous_playlist():
+    """ Processes ajax request to play previous playlist. """
+
+    '''
+    Receives chosen playlist from browser (playlist_name) pass into iframe src
+    playlist_src = spotifyutils.playlist_src(spotify_user_id, playlist_name)
+    return jsonify(playlist_src)
+
+    '''
+    pass
 
 @app.route('/logout')
 def logout():
     """Log out"""
 
-    # del session["logged_user"]
     session.clear()
     flash("Logged Out.")
 

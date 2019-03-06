@@ -4,19 +4,19 @@
 <div>Input an activity to generate a playlist!</div>
 
 <br>
-
-<form id="activity-form" action="/cont-activity-page" method="POST">
-    Activity name: <input type="text" name="activity_query">
+ 
+<form id="activity-form">
+    Activity name: <input type="text" id="activity_query">
     <br>
-    Playlist name: <input type="text" name="playlist_name">
+    Playlist name: <input type="text" id="playlist_name">
     <input type="submit" value="Submit" id='search-button'>
 </form>
 
 <br>
 <br>
 
-<div id="view-playlist">
-    <iframe data src="{{ playlist_view_src }}" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+<div id="div-playlist">
+    <iframe id="view-playlist"  data src="" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 </div>
 
 <div style="height:200px; width:200px;overflow-y:auto;">
@@ -32,124 +32,24 @@
   </table>
 </div>
 
-<!-- <script>
-  $('#view-playlist').on('submit',() => {
-    $('#view-playlist').toggle();
-    });    
 
-</script>> -->
-
-<!-- <script>
-$.ajax('activity-page.html', {
-  success: function(response) {
-    $('.NAMEOFCLASS').html(response);
-  }
-});
-</script> -->
-
-
-<!-- 
 <script>
-    function displayPlaylist(evt) => {
-        
-        let iframe = $("#view-playlist");
-        iframe.attr("src", iframe.data("src");
-    }
 
-    $('#search-button').on('submit', (evt) =>{
-        evt.preventDefault()
-    }
+  $('#activity-form').submit(function( event ) {
+    event.preventDefault();
+ 
+  const formData = {
+    activity_query: $('#activity_query').val(),
+    playlist_name: $('#playlist_name').val()
+    };
 
-    $('#search-button').on('submit', displayPlaylist);  
+  $.post('/activity-page-cont', formData, (results) => {
+    $('#view-playlist').attr('src', results.playlist);
+    });
+
+  });
 
 </script>
- -->
-
-<!-- 
-
-how to populate empty div container (div id="view-playlist") with iframe. will there be an issue if the page just redirects? What
-is the most direct design/workflow?
-
-will there be an issue with ajax request if processing multiple API 
-calls and seeded local database/spotify playlist?
-
-issue with passing in var to iframe src tag? confused with where to pass in var if page is redirecting instead of rendering template? -->
-
-
-
-
-
-
-<!-- <iframe src="https://open.spotify.com/embed/user/ea.olivia/playlist/3X7ElLuqbR3wb32dUlemhm" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe> -->
-
-
-<!-- **************THIS WORKS***************
-<meta id="auth_header" data-name="{{ auth_header }}" data-other="{{other}}">
-
-    <script>
-        window.onSpotifyWebPlaybackSDKReady = () => {
-            const play = ({
-      spotify_uri,
-      playerInstance: {
-        _options: {
-          // getOAuthToken,
-          // id
-        }
-      }
-    }) => {
-      // getOAuthToken(access_token => {
-        fetch(`https://api.spotify.com/v1/me/player/play?`, {
-          method: 'PUT',
-          body: JSON.stringify({  "context_uri": "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr" }),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + $('#auth_header').data().name
-          },
-        });
-      // });
-    };
-
-    play({
-      playerInstance: new Spotify.Player({ name: "..." }),
-      spotify_uri: 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr', 
-    });
-    };
-    </script>
-**************THIS WORKS***************
- -->
-
-<!--     <script>
-    
-        // let menuId = $("ul.nav").first().attr("id");
-        // // let keyword = whatever user specified
-        // $("button").click(function(){
-        // let request = $.ajax({
-        //   url: "https://api.spotify.com/v1/search",
-        //   type: "GET",
-        //   data: {q : keyword, type: 'playlist'},
-        //   dataType: "application/json"
-        // });
-
-
-        // $('#search-button').on('click', searchAPI);
-
-        var url = "https://api.spotify.com/v1/search?q=workout&type=playlist&limit=1&offset=1"
-        
-
-        $("#search-button").click(function(){
-          $.ajax({
-            url: url,
-            type: "GET",
-            contentType: "application/json",
-            headers: '{{resp}}',
-            success: function(data) {
-                //print result of get
-                console.log(data);
-            }
-          });
-
-
-    </script> -->
 
 <br>
 <br>
@@ -158,19 +58,4 @@ issue with passing in var to iframe src tag? confused with where to pass in var 
     <button id='logout-user' onclick="location.href = '/logout'">logout</button>
 </div>
 
-
-<!-- <script>
-    function logoutExistingUser(evt) {
-        window.location.replace("/logout");
-    }
-
-    $('#logout-user').on('click', logoutExistingUser);
-</script> -->
 {% endblock %}
-
-<!-- $("button").click(function(){
-  $.ajax({url: "demo_test.txt", success: function(result){
-    $("#div1").html(result);
-  }});
-});
- -->
