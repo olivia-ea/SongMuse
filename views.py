@@ -111,11 +111,21 @@ def login_current_user():
 @app.route('/activity-page', methods=['GET'])
 def route_activity():
 
+    return render_template('activity-page.html')
+
+@app.route('/activity-page.json', methods=['GET'])
+def display_prev_playlists():
+
     user_id = session.get('logged_user')['username']
 
     user_playlists = spotifyutils.users_playlists(user_id)
 
-    return render_template('activity-page.html', user_playlists=user_playlists)
+    playlists = []
+
+    for playlist in user_playlists:
+        playlists.append({'title': playlist})
+
+    return jsonify(playlists)
 
 @app.route('/activity-page-cont', methods=['POST'])
 def display_activity():
@@ -162,7 +172,7 @@ def display_activity():
 
     return jsonify(playlist_view_src)
 
-@app.route('/play-prev-playlist')
+@app.route('/play-prev-playlist.json', methods=['GET'])
 def play_previous_playlist():
     """ Processes ajax request to play previous playlist. """
 
@@ -170,7 +180,14 @@ def play_previous_playlist():
     Receives chosen playlist from browser (playlist_name) pass into iframe src
     playlist_src = spotifyutils.playlist_src(spotify_user_id, playlist_name)
     return jsonify(playlist_src)
+    
+    playlist_name = request.form.get('playlist_name')
+    
+    auth_header = session.get('auth_header')
+    
+    spotify_user_id = get_spotify_user_id(auth_header, playlist_name)
 
+    return jsonify(playlist_src(spotify_user_id, playlist_name))
     '''
     pass
 
