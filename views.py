@@ -118,12 +118,21 @@ def display_prev_playlists():
 
     user_id = session.get('logged_user')['username']
 
+    token = session.get('access_token')
+
+    session['auth_header'] = spotifyutils.auth_header(token)
+
+    auth_header = session.get('auth_header')
+
     user_playlists = spotifyutils.users_playlists(user_id)
+
+    spotify_user_id = spotifyutils.get_spotify_user_id(auth_header)
 
     playlists = []
 
     for playlist in user_playlists:
-        playlists.append({'title': playlist})
+        src = spotifyutils.playlist_src(spotify_user_id, playlist)
+        playlists.append({'title': playlist, 'src': src})
 
     return jsonify(playlists)
 
@@ -145,7 +154,6 @@ def display_activity():
     activity_id = new_activity.activity_id
     # Seed activities table 
 
-    session['auth_header'] = spotifyutils.auth_header(token)
     auth_header = session['auth_header'] 
     # Generates authorization headers
 
@@ -180,16 +188,12 @@ def play_previous_playlist():
     Receives chosen playlist from browser (playlist_name) pass into iframe src
     playlist_src = spotifyutils.playlist_src(spotify_user_id, playlist_name)
     return jsonify(playlist_src)
-    
-    playlist_name = request.form.get('playlist_name')
-    
-    auth_header = session.get('auth_header')
-    
-    spotify_user_id = get_spotify_user_id(auth_header, playlist_name)
-
-    return jsonify(playlist_src(spotify_user_id, playlist_name))
     '''
     pass
+
+    
+
+
 
 @app.route('/logout')
 def logout():

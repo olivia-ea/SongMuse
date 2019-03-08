@@ -11,28 +11,59 @@
     Playlist name: <input type="text" id="playlist_name">
     <input type="submit" value="Submit" id='search-button'>
 </form>
-<script src="../static/autocomplete.js"></script>
 
 <br>
 <br>
 
+<!-- ***********************WIDGET************************* -->
 <div id="div-playlist"></div>
 
+<br>
+
+<!-- *******************PREV PLAYLIST JSGRID****************** -->
 <div id="prev-playlist-table"></div>
+
+<br>
 
 <!-- *******************Create jsGRID Table********************** -->
 <script>
 
+  function createPlaylistTable(item, itemIndex) {
+    // alert("Creating playlist row");
+    // debugger;
+    // return `
+    //   <tr
+    //     class="jsgrid-cell"
+    //     style="width: 150px;"
+    //     data-src="${item.src}"
+    //   >
+    //   <td>
+    //     ${item.title}
+    //   </td>
+    //   </tr>
+
+    // `;
+    
+    let playlistRow = $("<tr>").addClass("jsgrid-cell");
+    let td = $("<td>").text(item.src);
+    playlistRow.append(td);
+    // debugger;
+    return playlistRow;
+
+  }
+
   $.get('/activity-page.json', (results) => {
     console.log(results);
     $("#prev-playlist-table").jsGrid({
-        width: "100%",
+        width: "50%",
         height: "400px",
         // inserting: true,
         // editing: true,
         sorting: true,
         selecting: true,
         // paging: true,
+
+        rowRenderer: createPlaylistTable,
 
         data: results,
 
@@ -41,45 +72,49 @@
             // { type: "control" }
         ]
       });
+    attachEventListeners();
   });
 </script>
 <!-- *****************AJAX Response to SUBMIT***********************-->
 <script>
 
-  $('#activity-form').submit(function( event ) {
-    event.preventDefault();
- 
-    const formData = {
-      activity_query: $('#activity_query').val(),
-      playlist_name: $('#playlist_name').val()
-      };
+  
 
-    $.post('/activity-page-cont', formData, (results) => {
-      $('#div-playlist').html(`<iframe id="view-playlist"  data src="${results.playlist}" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`);
-    });
- 
-    $("#prev-playlist-table").jsGrid("insertItem", ({'title': formData.playlist_name})).done(function() {
-    });
+    $('#activity-form').submit(function( event ) {
+      event.preventDefault();
+   
+      const formData = {
+        activity_query: $('#activity_query').val(),
+        playlist_name: $('#playlist_name').val()
+        };
 
-  });
+      $.post('/activity-page-cont', formData, (results) => {
+        $('#div-playlist').html(`<iframe id="view-playlist"  data src="${results.playlist}" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`);
+      });
+   
+      $("#prev-playlist-table").jsGrid("insertItem", ({'title': formData.playlist_name})).done(function() {
+      });
 
-</script>
-<!-- ***********AJAX Response to PREV PLAYLIST*******************-->
-<script>
-  $('#prev-playlist-table').onclick(function( event ) {
-    event.preventDefault();
+      $('#activity-form')[0].reset();
 
-    // onOptionChanging or onclick
-
-  const formData = {
-    playlist_name: $('#playlist_name').val()
-    };
-
-  $.post('/activity-page-cont', formData, (results) => {
-      $('#div-playlist').html(`<iframe id="view-playlist"  data src="${results.playlist}" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`);
     });
   
-</script>>
+
+</script>
+
+<!-- ***********AJAX Response to PREV PLAYLIST*******************-->
+<script>
+  function attachEventListeners(){
+    alert('attached event listeners');
+    $('.jsgrid-cell').click(function( event ) {
+        event.preventDefault();
+
+        let playlistName = event.target.innerText;
+
+        $('body').append(`<iframe id="view-playlist"  data src="${playlistName}" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`);
+    });
+  }
+</script>
 
 
 <br>
