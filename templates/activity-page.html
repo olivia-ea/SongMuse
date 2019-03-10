@@ -44,12 +44,18 @@
 
     // `;
     // item.title, 
+
+    // alert('populating prev playlist table!');
     
     let playlistRow = $("<tr>").addClass("jsgrid-cell");
     // let td = $("<td>").text(item.title).html(item.src);
-    let td = $("<td>").text(item.src);
-    // append(`<input type='hidden' id=${item.title} value=${item.src}>`);
+    let td = $("<td>").html("<a href=" + item.src +">" + item.title + "</a>");
+    // let td = $("<td>").html(item.src);
+    
+    // <a href="https://www.w3schools.com">Visit W3Schools</a>
+    // .append(`<input type='hidden' id=${item.title} value=${item.src}>`);
     // let tdSrc = $("<td>")
+    // data-id: unique name 
 
 
     playlistRow.append(td);
@@ -111,14 +117,20 @@
 <!-- ***********AJAX Response to PREV PLAYLIST*******************-->
 <script>
   function attachEventListeners(){
-    alert('attached event listeners');
+    // alert('attached event listeners');
     $('.jsgrid-cell').click(function( event ) {
         event.preventDefault();
 
-        let playlistName = event.target.innerText;
-        console.log(event.target.innerHTML);
+        let playlistName = event.target.innerHTML;
+        // playlistName = playlistName.getAttribute("href");
+        // playlistName = playlistName.attr("href");
+        // console.log(event.target.innerHTML);
 
-        $('#div-playlist').html(`<iframe id="view-playlist"  data src="${playlistName}" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`);
+        // $(this).attr("href")
+        // console.log("we just clicked: " + playlistName);
+        var href = playlistName.match(/href="([^"]*)/)[1];
+
+        $('#div-playlist').html(`<iframe id="view-playlist"  data src="${href}" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`);
 
         // $('#view-playlist').html(`<iframe id="view-playlist"  data src="${playlistName}" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`);  
 
