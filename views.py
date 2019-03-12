@@ -180,20 +180,6 @@ def display_activity():
 
     return jsonify(playlist_view_src)
 
-@app.route('/play-prev-playlist.json', methods=['GET'])
-def play_previous_playlist():
-    """ Processes ajax request to play previous playlist. """
-
-    '''
-    Receives chosen playlist from browser (playlist_name) pass into iframe src
-    playlist_src = spotifyutils.playlist_src(spotify_user_id, playlist_name)
-    return jsonify(playlist_src)
-    '''
-    pass
-
-    
-
-
 
 @app.route('/logout')
 def logout():

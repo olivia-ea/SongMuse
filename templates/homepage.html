@@ -1,29 +1,51 @@
 {% extends 'base.html' %}
-{% block content %}
-    <div class="container-fluid text-center light-text">
 
-    <h1>This is the homepage!</h1>
-
-
-
-    <label>Create New Account</label>
-    <div>  
-        <button id='new-user' onclick="location.href = '/spotify-login'">submit</button>
-    </div>
-
-    <label>Login Returning User</label>
-    <div>  
-        <button id='returning-user' onclick="location.href = '/login-current-user'">submit</button>
-    </div>
-
-<!--     <script>
+{% block title %}SongMuse{% endblock %}
+<header>
     
-        function redirectToSpotify(evt) {
-            window.location.replace("/spotify-login");
-        }
+</header>
+{% block content %}
 
-        $('#spotify').on('click', redirectToSpotify);
+<div id="background-img" class="container-fluid text-center light-text">
+<!--     <div class=“container col-7”>
+ -->    <div class="homepage-header-row row">
+        <div class="col-12">
+                <!-- <span class="text-wrapper"> -->
+            <h1 id="main-title">SongMuse</h1>
 
-    </script>
-     -->
+            <p id="main-description">Your activity based playlist generator.</p>
+
+        <span>
+            <button id='new-user' class='btn btn-outline-success btn-lg' onclick="location.href = '/spotify-login'">NEW USER</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id='returning-user' class="btn btn-outline-success btn-lg" onclick="location.href = '/login-current-user'">RETURNING USER</button>
+        
+        </span>
+
+    </div>
+</div>
 {% endblock %}
+
+
+
+<!-- 
+  <header>
+    Header
+  </header>
+
+  <aside class="sidebar-left">
+    Left Sidebar
+  </aside>
+
+  <article>
+    Article
+  </article>
+
+  <aside class="sidebar-right">
+    Right Sidebar
+  </aside>
+  
+  <footer>
+    Footer
+  </footer>
+</div> -->

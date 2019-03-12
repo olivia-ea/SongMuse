@@ -3,9 +3,7 @@
   margin: 0;
 }
 
-html, body { 
-   background-color: #000000; /* Black */
-   font-family: 'Fjalla One', sans-serif;
-   color: black;
-    overflow-x: hidden;
+html, body {
+    width: 100%;
+    height: 100%;
 }

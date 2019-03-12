@@ -29,37 +29,17 @@
 <script>
 
   function createPlaylistTable(item, itemIndex) {
-    // alert("Creating playlist row");
-    // debugger;
-    // return `
-    //   <tr
-    //     class="jsgrid-cell"
-    //     style="width: 150px;"
-    //     data-src="${item.src}"
-    //   >
-    //   <td>
-    //     ${item.title}
-    //   </td>
-    //   </tr>
 
-    // `;
-    // item.title, 
-
-    // alert('populating prev playlist table!');
     
     let playlistRow = $("<tr>").addClass("jsgrid-cell");
     // let td = $("<td>").text(item.title).html(item.src);
     let td = $("<td>").html("<a href=" + item.src +">" + item.title + "</a>");
     // let td = $("<td>").html(item.src);
-    
-    // <a href="https://www.w3schools.com">Visit W3Schools</a>
     // .append(`<input type='hidden' id=${item.title} value=${item.src}>`);
     // let tdSrc = $("<td>")
     // data-id: unique name 
 
-
     playlistRow.append(td);
-    // debugger;
     return playlistRow;
 
   }
