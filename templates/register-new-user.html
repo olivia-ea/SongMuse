@@ -4,20 +4,18 @@
 <h1 id="main-title">Register</h1> 
 
 <form id="sign-up-form" action="/sign-up-verification" method="POST">
-  <label>
-      Username: 
-  </label>
-
-  <input type="text" name="new-username" required>
-
-  <label>
-      Password: 
-  </label>
-
-  <input type="password" name="new-password" required>
+  <div>
+    <label id="button-label">Username: </label>
+    <input class="input-field" type="text" name="new-username" required>
+  </div>
 
   <div>
-    <input type="submit" value="Register">
+    <label id ="button-label">Password: </label>
+    <input class="input-field" type="password" name="new-password" required>
+  </div>
+
+  <div>
+    <input id="submit-btn" class="btn btn-outline-success btn-sm" type="submit" value="Register">
   </div>
 
 </form>

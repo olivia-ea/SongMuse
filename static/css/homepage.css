@@ -6,24 +6,43 @@
   background-size: cover;
 }
 
-#main-title {
+#main-title-homepage {
     font-family: 'Permanent Marker', sans-serif;
-    color: #32CD32;
-    font-size: 150px;
+    color: #65B146;
+    text-shadow: black 0px 0px 10px;
+    font-size: 130px;
     text-align: center;
     padding-top: 50px;
 }
 
 #main-description{
     font-family: 'Permanent Marker', sans-serif;
-    color: #32CD32;
+    color: #65B146;
+    text-shadow: black 0px 0px 10px;
     font-size: 30px;
-    padding-bottom: 450px;
+    padding-bottom: 50px;
+}
+
+#opt-desc {
+    display:none;
+    padding-bottom: 100px;
 }
 
 .btn {
     border-radius: 8px;
-    border: 2px solid #69E74F;
+    border: 2px solid #65B146;
+    text-shadow: black 0px 0px 10px;
+}
+
+.button-label {
+    font-family: 'Metrophobic', sans-serif;
+}
+
+footer {
+    position: absolute;
+    bottom: 50px;
+    left:0;
+    right: 0;
 }
 
 /*.btn:hover {

@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
   <h1 id="main-title">Login</h1>
+
+
   <form id="login-form" action="/login-verification" method="POST">
 
     <div>
       <label>Username:
-        <input type="text" name="username" required>
+        <input class="input-field" type="text" name="username" required>
       </label>
-    </div>
+    </div> 
 
     <div>
       <label>Password:
-        <input type="password" name="password" required>
+        <input class="input-field" type="password" name="password" required>
       </label>
     </div>
 
     <div>
-      <input type="submit" value="Log In">
+      <input id="submit-btn" class="btn btn-outline-success btn-sm" type="submit" value="Log In">
     </div>
 
   </form>

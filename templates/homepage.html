@@ -11,20 +11,55 @@
  -->    <div class="homepage-header-row row">
         <div class="col-12">
                 <!-- <span class="text-wrapper"> -->
-            <h1 id="main-title">SongMuse</h1>
+            <h1 id="main-title-homepage">SongMuse</h1>
 
             <p id="main-description">Your activity based playlist generator.</p>
 
-        <span>
-            <button id='new-user' class='btn btn-outline-success btn-lg' onclick="location.href = '/spotify-login'">NEW USER</button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button id='returning-user' class="btn btn-outline-success btn-lg" onclick="location.href = '/login-current-user'">RETURNING USER</button>
-        
-        </span>
+            <p id="opt-desc">SongMuse uses the Spotify API to generate playlists based off the user's desired activity. </p>
+
+
 
     </div>
 </div>
+
+
+<footer>
+        <span>
+            <button id="about-btn" class='btn btn-outline-success btn-md'>
+                <label class="button-label">
+                ABOUT
+                </label>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <button id='new-user' class='btn btn-outline-success btn-md' onclick="location.href = '/spotify-login'">
+                <label class="button-label">
+                NEW USER
+                </label>
+            </button>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id='returning-user' class="btn btn-outline-success btn-md" onclick="location.href = '/login-current-user'">
+                <label class="button-label">
+                RETURNING USER
+                </label>
+            </button>
+        
+        </span>    
+
+</footer>
+
+<script>
+
+$("#about-btn").click(function(){
+        $("#opt-desc").toggle();
+    });
+
+</script>
+
 {% endblock %}
+
+
 
 
 

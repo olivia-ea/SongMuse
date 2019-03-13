@@ -1,0 +1,44 @@
+body {
+    background-color: #C6C6C6;
+}
+
+#main-title {
+    font-family: 'Permanent Marker', sans-serif;
+    color: #32CD32;
+    font-size: 40px;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.input-field {
+    background-color: #C6C6C6;
+    font-family: 'Permanent Marker', sans-serif;
+}
+
+#prev-playlist-table{
+    padding-right: 100px;
+    padding-left: 100px;
+}
+
+.jsgrid-cell {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+/*#login-form {
+    color: #32CD32;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 50px;
+}*/
+
+#submit-btn {
+    border-radius: 8px;
+    color: #69E74F;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left:0;
+    right: 0;
+}

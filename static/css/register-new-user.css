@@ -1,7 +1,32 @@
+/*body {
+    background-color: #757974;
+}
+
+.input-field{
+    background-color: #757974;
+    font-family: 'Permanent Marker', sans-serif;
+}
+
 #main-title {
     font-family: 'Permanent Marker', sans-serif;
     color: #32CD32;
-    font-size: 150px;
+    font-size: 120px;
     text-align: center;
     padding-top: 50px;
 }
+
+#sign-up-form {
+    color: #32CD32;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 50px;
+}
+
+#submit-btn {
+    border-radius: 8px;
+    color: #69E74F;
+}
+
+.button-label {
+    font-family: 'Metrophobic', sans-serif;
+}*/
