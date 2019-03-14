@@ -7,7 +7,7 @@
 }
 
 #main-title-homepage {
-    font-family: 'Permanent Marker', sans-serif;
+    font-family: 'Cutive Mono', monospace;
     color: #65B146;
     text-shadow: black 0px 0px 10px;
     font-size: 130px;
@@ -16,7 +16,7 @@
 }
 
 #main-description{
-    font-family: 'Permanent Marker', sans-serif;
+    font-family: 'Cutive Mono', monospace;
     color: #65B146;
     text-shadow: black 0px 0px 10px;
     font-size: 30px;
@@ -28,7 +28,7 @@
     padding-bottom: 100px;
     padding-right: 300px;
     padding-left: 300px;
-    font-family: 'Metrophobic', sans-serif;
+    font-family: 'Cutive Mono', monospace;
     color: white;
     font-size: 20px;
     text-shadow: black 0px 0px 10px;
@@ -46,7 +46,7 @@
 }
 
 .button-label {
-    font-family: 'Metrophobic', sans-serif;
+    font-family: 'Unica One', cursive;
     font-size: 15;
 }
 

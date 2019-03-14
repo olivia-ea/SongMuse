@@ -3,7 +3,7 @@
 
 
 
-<div class="container">
+<div id="activity-background" class="container-fluid text-center light-text">
     
     <h1 id="main-title">Input an activity to generate a playlist!</h1>
     <div class="row">
@@ -11,10 +11,17 @@
         <div class="card">
             <div class="card-body">
                 <form id="activity-form">
-                    Activity name: <input id="activity_query" class="input-field" type="text">
+
+                    <label>
+                        Activity name: <input id="activity_query" class="input-field" type="text">
+                    </label>
                     <br>
-                    Playlist name: <input id="playlist_name" class="input-field" type="text" >
+                    <label>
+                        Playlist name: <input id="playlist_name" class="input-field" type="text" >
+                    </label>
+
                     <input id="submit-btn" class="btn btn-outline-success btn-sm" type="submit" value="Submit" id='search-button'>
+                    
                 </form>
             </div>
         </div>
@@ -27,22 +34,18 @@
                     </div>
                 </div>
             </div>
-            <div class="col-1">
-            </div>
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-body">
-                        <div id="div-playlist"></div>
-                    </div>
-                </div>
-            </div>
-    </div>
-<!-- ***********************WIDGET************************* -->
+
+
+        <div class="col-1">
+        </div>
+
 
         <div class="col-6">
-            
-        </div> 
-<!-- *******************PREV PLAYLIST JSGRID****************** -->
+            <div id="div-playlist"></div>
+        </div>
+    </div>
+</div>
+
 
 </div>
 
@@ -140,15 +143,13 @@
      
   }
 </script>
-
-
-<br>
-<br>
-<br>
 <footer>
     <center>  
         <button id='logout-user' onclick="location.href = '/logout'">logout</button>
     </center>
 </footer>
-
 {% endblock %}
+
+
+
+

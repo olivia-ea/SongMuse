@@ -1,6 +1,6 @@
-body {
+#activity-background {
   height: 100%; 
-  background: url('/static/images/dark_wood.png');
+  background: url('/static/images/record-player.jpg');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -22,26 +22,32 @@ body {
 .card-body {
     opacity: .9;
 }
-
+/*
 #prev-playlist-table{
     padding-right: 100px;
     padding-left: 100px;
-}
+}*/
 
 .jsgrid-cell {
     padding-right: 10px;
     padding-left: 10px;
 }
-/*#login-form {
-    color: #32CD32;
-    font-size: 20px;
-    text-align: center;
-    padding-top: 50px;
-}*/
+
+#prev-playlist-table, th, td {
+    padding: 10px;
+    margin: 0px auto;
+    font-size: 15px; 
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
 
 #submit-btn {
     color: #69E74F;
 }
+
+
 
 footer {
     position: absolute;
