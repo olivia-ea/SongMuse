@@ -1,23 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
+<div id="background-img" class="container-fluid text-center light-text">
 
-<h1 id="main-title">Register</h1> 
+  <h1 id="main-title-login">Register</h1> 
+    <center>
+      <div class="card" style="width: 500px;">
+        <div class="card-body">
+            <form id="sign-up-form" action="/sign-up-verification" method="POST">
+              <div>
+                <label>USERNAME </label>
+                <input class="input-field" type="text" name="new-username" required>
+              </div>
 
-<form id="sign-up-form" action="/sign-up-verification" method="POST">
-  <div>
-    <label id="button-label">Username: </label>
-    <input class="input-field" type="text" name="new-username" required>
-  </div>
+              <div>
+                <label>PASSWORD </label>
+                <input class="input-field" type="password" name="new-password" required>
+              </div>
 
-  <div>
-    <label id ="button-label">Password: </label>
-    <input class="input-field" type="password" name="new-password" required>
-  </div>
+              <div>
+                <input id="submit-btn" class="btn btn-outline-success btn-sm" type="submit" value="REGISTER">
+              </div>
 
-  <div>
-    <input id="submit-btn" class="btn btn-outline-success btn-sm" type="submit" value="Register">
-  </div>
-
-</form>
-
+            </form>
+          </div>
+        </div>
+    </center>
+</div>
 {% endblock %}

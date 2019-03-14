@@ -1,32 +1,94 @@
-/*body {
-    background-color: #757974;
+#background-img {
+  height: 100%; 
+  background: url('/static/images/record-player.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 }
 
-.input-field{
-    background-color: #757974;
-    font-family: 'Permanent Marker', sans-serif;
-}
 
-#main-title {
+#main-title-login {
     font-family: 'Permanent Marker', sans-serif;
-    color: #32CD32;
-    font-size: 120px;
+    text-shadow: black 0px 0px 10px;
+    color: #65B146;
+    font-size: 100px;
     text-align: center;
-    padding-top: 50px;
+    padding-top: 100px;
+}
+
+.card { 
+    background-color: rgba(245, 245, 245, 0.4); 
+}
+
+.card-body {
+    opacity: .4;
+    padding-top: 1px;
+    padding-right: 10px;
+    padding-bottom: 1px;
+    padding-left: 10px;
 }
 
 #sign-up-form {
-    color: #32CD32;
+
+    padding-top: 0px;
+    margin: 35px auto 35px;
+    padding: 10px;
+    position: relative;
+    font-family: 'Metrophobic', sans-serif;
     font-size: 20px;
-    text-align: center;
-    padding-top: 50px;
+    text-shadow: black 0px 0px 10px;
+    color: #65B146;
+    text-shadow: 0 2px 1px rgba(0,0,0,0.3);
+}
+
+#sign-up-form input[type=text],
+#sign-up-form input[type=password] {
+    width: 100%;
+    padding-top: 8px;
+    padding-right: 4px;
+    padding-bottom: 8px;
+    padding-left: 10px;    
+    margin-bottom: 15px;
+    border: 1px solid #4e3043; 
+    background: rgba(0,0,0,0.15);
+    border-radius: 2px;
+    box-shadow: 
+        0 1px 0 rgba(255,255,255,0.2), 
+        inset 0 1px 1px rgba(0,0,0,0.1);
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+
+    /* Font styles */
+    font-family: 'Metrophobic', sans-serif;
+    font-size: 20px;
+    text-shadow: black 0px 0px 10px;
+    color: #fff;
+}
+
+.input-field {
+    background-color: #757974;
+    font-family: 'Metrophobic', sans-serif;
+    font-size: 20px;
+    text-shadow: black 0px 0px 10px;
 }
 
 #submit-btn {
-    border-radius: 8px;
-    color: #69E74F;
+
+    width: 320px;
+    background: #737170;    
+    border-radius: 5px;
+    border: 1px solid #4e3043;
+
+    /* Font styles */
+    color: white;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Metrophobic', sans-serif;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 25px;
+
 }
 
-.button-label {
-    font-family: 'Metrophobic', sans-serif;
-}*/

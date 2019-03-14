@@ -1,5 +1,9 @@
 body {
-    background-color: #C6C6C6;
+  height: 100%; 
+  background: url('/static/images/dark_wood.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 }
 
 #main-title {
@@ -13,6 +17,10 @@ body {
 .input-field {
     background-color: #C6C6C6;
     font-family: 'Permanent Marker', sans-serif;
+}
+
+.card-body {
+    opacity: .9;
 }
 
 #prev-playlist-table{
@@ -32,13 +40,12 @@ body {
 }*/
 
 #submit-btn {
-    border-radius: 8px;
     color: #69E74F;
 }
 
 footer {
     position: absolute;
-    bottom: 0;
+    bottom: 50px;
     left:0;
     right: 0;
 }

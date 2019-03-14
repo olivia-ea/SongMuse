@@ -1,26 +1,34 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1 id="main-title">Login</h1>
+<div id="background-img" class="container-fluid text-center light-text">
 
+  <h1 id="main-title-login">Login</h1>
+    <center>
+      <div class="card" style="width: 500px;">
+        <div class="card-body">
 
-  <form id="login-form" action="/login-verification" method="POST">
+          <form id="login-form" action="/login-verification" method="POST">
 
-    <div>
-      <label>Username:
-        <input class="input-field" type="text" name="username" required>
-      </label>
-    </div> 
+            <div>
+              <label>USERNAME
+                <input class="input-field" type="text" name="username" required>
+              </label>
+            </div> 
 
-    <div>
-      <label>Password:
-        <input class="input-field" type="password" name="password" required>
-      </label>
-    </div>
+            <div>
+              <label>PASSWORD
+                <input class="input-field" type="password" name="password" required>
+              </label>
+            </div>
 
-    <div>
-      <input id="submit-btn" class="btn btn-outline-success btn-sm" type="submit" value="Log In">
-    </div>
+            <div>
+              <input id="submit-btn" class="btn btn-outline-success btn-sm" type="submit" value="LOG IN">
+            </div>
 
-  </form>
-
+          </form>
+        </div>
+      </div>
+    </center>
+</div>
 {% endblock %}
+
