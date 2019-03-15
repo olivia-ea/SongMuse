@@ -4,50 +4,47 @@
 
 
 <div id="activity-background" class="container-fluid text-center light-text">
-    
-    <h1 id="main-title">Input an activity to generate a playlist!</h1>
-    <div class="row">
-        <div class="col-5">
-        <div class="card">
-            <div class="card-body">
-                <form id="activity-form">
 
-                    <label>
-                        Activity name: <input id="activity_query" class="input-field" type="text">
-                    </label>
-                    <br>
-                    <label>
-                        Playlist name: <input id="playlist_name" class="input-field" type="text" >
-                    </label>
-
-                    <input id="submit-btn" class="btn btn-outline-success btn-sm" type="submit" value="Submit" id='search-button'>
-                    
-                </form>
-            </div>
-        </div>
-            <br>
-            <br>
+    <div class="split left">
+        <div class="centered">
             <div class="card">
                 <div class="card-body">
-                    <div>
-                        <div id="prev-playlist-table"></div>
-                    </div>
+                    <form id="activity-form">
+                        <h5 class="card-title">Input an activity to generate a playlist!</h5>
+                        <label>
+                            Activity name: <input id="activity_query" class="input-field" type="text">
+                        </label>
+                        <br>
+                        <label>
+                            Playlist name: <input id="playlist_name" class="input-field" type="text" >
+                        </label>
+
+                        <input id="submit-btn" class="btn btn-outline-success btn-sm" type="submit" value="SUBMIT" id='search-button'>
+                        
+                    </form>
                 </div>
             </div>
+                <br>
+                <br>
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <div id="prev-playlist-table"></div>
+                        </div>
+                    </div>
+                </div>
 
-
-        <div class="col-1">
-        </div>
-
-
-        <div class="col-6">
-            <div id="div-playlist"></div>
         </div>
     </div>
+    <div class="split right">
+        <div class="centered">
+                <div id="div-playlist"></div>
+        </div>
+    </div>
+
 </div>
 
 
-</div>
 
 <!-- *******************Create jsGRID Table********************** -->
 <script>
@@ -84,7 +81,7 @@
         data: results,
 
         fields: [
-            { name: "title", title: "Previous Playlists", type: "text", width: 150, validate: "required" }
+            { name: "title", title: "PREVIOUS PLAYLISTS", type: "text", width: 150, validate: "required" }
             // { type: "control" }
         ]
       });

@@ -16,27 +16,28 @@
 
 .input-field {
     background-color: #C6C6C6;
-    font-family: 'Permanent Marker', sans-serif;
+    font-family: 'Unica One', cursive;
 }
 
 .card-body {
     opacity: .9;
 }
-/*
-#prev-playlist-table{
-    padding-right: 100px;
-    padding-left: 100px;
-}*/
 
 .jsgrid-cell {
     padding-right: 10px;
     padding-left: 10px;
 }
 
+#activity-form {
+    font-family: 'Unica One', cursive;
+}
+
 #prev-playlist-table, th, td {
     padding: 10px;
     margin: 0px auto;
     font-size: 15px; 
+    font-family: 'Unica One', cursive;
+
 }
 
 tr:hover {
@@ -45,8 +46,32 @@ tr:hover {
 
 #submit-btn {
     color: #69E74F;
+    font-family: 'Unica One', cursive;
 }
 
+
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+  padding-left: 30px;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  padding-top: 75px;
+  padding-right: 30px;
+}
 
 
 footer {
