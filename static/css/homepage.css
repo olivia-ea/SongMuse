@@ -28,12 +28,32 @@
 #opt-desc {
     display:none;
     padding-bottom: 100px;
-    padding-right: 300px;
-    padding-left: 300px;
-    font-family: 'Cutive Mono', monospace;
+    padding-right: 350px;
+    padding-left: 350px;
+    font-family: 'Unica One', cursive;
+    text-transform: uppercase;
     color: white;
     font-size: 20px;
     text-shadow: black 0px 0px 10px;
+}
+
+#about-btn, #new-user, #returning-user {
+    color: white;
+    background-color: #65B146;
+    opacity: .9;
+    border: 3px solid #218C46;
+}
+
+#about-btn:hover{
+    background: none;
+}
+
+#new-user:hover{
+    background: none;
+}
+
+#returning-user:hover{
+    background: none;
 }
 
 .btn {
@@ -44,12 +64,11 @@
     padding-right: 7px;
     padding-left: 7px;
     padding-top: 3px;
-
 }
 
 .button-label {
     font-family: 'Unica One', cursive;
-    font-size: 15;
+    font-size: 20;
 }
 
 footer {
@@ -58,13 +77,3 @@ footer {
     left:0;
     right: 0;
 }
-
-/*.btn:hover {
-  background-color: #FFFFFF;
-  color: white;
-}*/
-
-
-/*#32CD32*/
-/*#69E74F*/
-/*Fredoka+One|Monoton|Righteous|Permanent+Marker*/

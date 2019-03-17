@@ -35,7 +35,8 @@
     margin: 35px auto 35px;
     padding: 10px;
     position: relative;
-    font-family: 'Cutive Mono', monospace;
+    font-family: 'Unica One', cursive;
+    text-transform: uppercase;
     font-size: 20px;
     text-shadow: black 0px 0px 10px;
     color: #65B146;
@@ -61,17 +62,15 @@
     transition: all 0.3s ease-out;
 
     /* Font styles */
-    font-family: 'Cutive Mono', monospace;
-    font-size: 20px;
-    text-shadow: black 0px 0px 10px;
+    font-family: 'Unica One', cursive;
+    font-size: 25px;
     color: #fff;
 }
 
 .input-field {
     background-color: #757974;
-    font-family: 'Cutive Mono', monospace;
-    font-size: 20px;
-    text-shadow: black 0px 0px 10px;
+    font-family: 'Unica One', cursive;
+    font-size: 25px;
 }
 
 #submit-btn {

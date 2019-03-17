@@ -10,17 +10,18 @@
             <div class="card">
                 <div class="card-body">
                     <form id="activity-form">
-                        <h5 class="card-title">Input an activity to generate a playlist!</h5>
-                        <label>
-                            Activity name: <input id="activity_query" class="input-field" type="text">
-                        </label>
-                        <br>
-                        <label>
-                            Playlist name: <input id="playlist_name" class="input-field" type="text" >
-                        </label>
-
-                        <input id="submit-btn" class="btn btn-outline-success btn-sm" type="submit" value="SUBMIT" id='search-button'>
+                        <h5 id="form-title" class="card-title">INPUT A KEYWORD TO GENERATE A PLAYLIST</h5>
                         
+                            KEYWORD
+                            <input id="activity_query" class="input-field" type="text">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            PLAYLIST NAME 
+                            <input id="playlist_name" class="input-field" type="text">
+
+                        <div>
+                        <input id="submit-btn-3" class="btn btn-outline-success btn-sm" type="submit" value="SUBMIT" id='search-button'>
+                        </div>
+
                     </form>
                 </div>
             </div>
@@ -28,7 +29,7 @@
                 <br>
                 <div class="card">
                     <div class="card-body">
-                        <div>
+                        <div id="td-color">
                             <div id="prev-playlist-table"></div>
                         </div>
                     </div>
@@ -38,7 +39,9 @@
     </div>
     <div class="split right">
         <div class="centered">
-                <div id="div-playlist"></div>
+  
+            <div id="div-playlist"></div>
+
         </div>
     </div>
 
@@ -102,7 +105,7 @@
         };
 
       $.post('/activity-page-cont', formData, (results) => {
-        $('#div-playlist').html(`<iframe id="view-playlist"  data src="${results.playlist}" width="100" height="180" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`);
+        $('#div-playlist').html(`<iframe id="view-playlist"  data src="${results.playlist}" width="500" height="580" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`);
       });
    
       $("#prev-playlist-table").jsGrid("insertItem", ({'title': formData.playlist_name})).done(function() {
@@ -140,11 +143,17 @@
      
   }
 </script>
+<div>
 <footer>
+    <div>
+    
     <center>  
-        <button id='logout-user' onclick="location.href = '/logout'">logout</button>
+        <button id='logout-user' class="btn btn-outline-success btn-sm" onclick="location.href = '/logout'">LOGOUT</button>
     </center>
+    </div>
+    
 </footer>
+</div>
 {% endblock %}
 
 

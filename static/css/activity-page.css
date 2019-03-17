@@ -1,3 +1,7 @@
+a {
+  color: #000000;
+}
+
 #activity-background {
   height: 100%; 
   background: url('/static/images/record-player.jpg');
@@ -7,11 +11,16 @@
 }
 
 #main-title {
-    font-family: 'Permanent Marker', sans-serif;
-    color: #32CD32;
+    font-family: 'Bungee Hairline', cursive;
+    font-weight: bold;
+    font-weight: bold;
     font-size: 40px;
     text-align: center;
     padding-top: 50px;
+}
+
+#form-title {
+    font-size: 25px;
 }
 
 .input-field {
@@ -28,25 +37,45 @@
     padding-left: 10px;
 }
 
+
 #activity-form {
     font-family: 'Unica One', cursive;
+    font-size: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
-#prev-playlist-table, th, td {
+#prev-playlist-table, th {
+    padding: 10px;
+    margin: 0px auto;
+    color: #000000;
+    font-size: 25px; 
+    font-family: 'Unica One', cursive;   
+}
+
+#prev-playlist-table, td {
     padding: 10px;
     margin: 0px auto;
     font-size: 15px; 
-    font-family: 'Unica One', cursive;
+    font-family: 'Unica One', cursive;   
+}
 
+#div-playlist {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    margin: 0px auto;
 }
 
 tr:hover {
     background-color: #f5f5f5;
 }
 
-#submit-btn {
+#submit-btn-3 {
+    width: 90px;
     color: #69E74F;
     font-family: 'Unica One', cursive;
+    margin-top: 15px;
 }
 
 
@@ -57,7 +86,7 @@ tr:hover {
   z-index: 1;
   top: 0;
   overflow-x: hidden;
-  padding-top: 20px;
+  padding-top: 40px;
 }
 
 /* Control the left side */
@@ -69,13 +98,18 @@ tr:hover {
 /* Control the right side */
 .right {
   right: 0;
-  padding-top: 75px;
+  padding-top: 55px;
   padding-right: 30px;
+}
+
+#logout-user {
+    font-family: 'Unica One', cursive;    
 }
 
 
 footer {
     position: absolute;
+    z-index: 1;
     bottom: 50px;
     left:0;
     right: 0;

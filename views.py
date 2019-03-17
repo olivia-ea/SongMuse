@@ -64,7 +64,7 @@ def register_process():
     user = User.query.filter(User.user_id==username).first()
 
     if user:
-        flash("That username is already taken!")
+        # flash("That username is already taken!")
         return redirect("/login-current-user")
     else:
         new_user = User(user_id=username, password=password, auth_token=session.get('access_token'), refresh_token=session.get('refresh_token'))
@@ -75,7 +75,7 @@ def register_process():
         user_id = new_user.user_id
         session['logged_user'] = {'username': username}
 
-        flash(f"User {username} added.")
+        # flash(f"User {username} added.")
 
         return redirect("/activity-page")
 
@@ -100,12 +100,12 @@ def login_current_user():
             refresh_token = User.query.filter_by(user_id=user_id).first().refresh_token
             spotify_response_data = spotifyutils.get_new_auth_token(refresh_token)
             session['access_token'] = spotify_response_data.get('access_token')
-            flash("You've successfully logged in!")
+            # flash("You've successfully logged in!")
             return redirect("/activity-page")
         else:
-            flash("The password is incorrect.")
+            return("The password is incorrect.")
     else:
-        flash("That username doesn't exist!")
+        # flash("That username doesn't exist!")
         return redirect("/register-new-user")
 
 @app.route('/activity-page', methods=['GET'])
@@ -186,7 +186,7 @@ def logout():
     """Log out"""
 
     session.clear()
-    flash("Logged Out.")
+    # flash("Logged Out.")
 
     return redirect("/")
 
