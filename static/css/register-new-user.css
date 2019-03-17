@@ -30,17 +30,16 @@
 }
 
 #sign-up-form {
-
     padding-top: 0px;
     margin: 35px auto 35px;
     padding: 10px;
     position: relative;
     font-family: 'Unica One', cursive;
-    text-transform: uppercase;
-    font-size: 20px;
-    text-shadow: black 0px 0px 10px;
     color: #65B146;
-    text-shadow: 0 2px 1px rgba(0,0,0,0.3);
+    font-weight: bold;   
+    text-shadow: #218C46;
+    text-transform: uppercase;
+    font-size: 25px;
 }
 
 #sign-up-form input[type=text],
@@ -60,27 +59,23 @@
     -ms-transition: all 0.3s ease-out;
     -o-transition: all 0.3s ease-out;
     transition: all 0.3s ease-out;
-
-    /* Font styles */
     font-family: 'Unica One', cursive;
-    font-size: 25px;
+    font-size: 20px;
     color: #fff;
 }
 
+
 .input-field {
-    background-color: #757974;
+    background-color: #C6C6C6;
     font-family: 'Unica One', cursive;
-    font-size: 25px;
+    font-size: 20px;
 }
 
-#submit-btn {
-
-    width: 320px;
+#submit-btn-new {
+    width: 310px;
     background: #737170;    
     border-radius: 5px;
     border: 1px solid #4e3043;
-
-    /* Font styles */
     color: white;
     text-shadow: 0 1px 0 rgba(0,0,0,0.3);
     font-size: 16px;
@@ -89,6 +84,8 @@
     padding-top: 10px;
     padding-bottom: 10px;
     margin: 25px;
-
 }
 
+#submit-btn-new:hover {
+    color: #65B146;
+}

@@ -72,12 +72,23 @@ tr:hover {
 }
 
 #submit-btn-3 {
-    width: 90px;
-    color: #69E74F;
+    width: 150px;
+    background: #737170;    
+    border-radius: 5px;
+    border: 1px solid #4e3043;
+    color: white;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+    font-size: 16px;
+    font-weight: bold;
     font-family: 'Unica One', cursive;
-    margin-top: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: 15px;
 }
 
+#submit-btn-3:hover {
+    color: #65B146;
+}
 
 .split {
   height: 100%;
@@ -102,10 +113,18 @@ tr:hover {
   padding-right: 30px;
 }
 
+
 #logout-user {
-    font-family: 'Unica One', cursive;    
+    color: white;
+    font-family: 'Unica One', cursive;
+    background-color: #65B146;
+    opacity: .9;
+    border: 3px solid #218C46;
 }
 
+#logout-user:hover{
+    background: none;
+}
 
 footer {
     position: absolute;
