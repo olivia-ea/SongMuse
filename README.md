@@ -60,5 +60,9 @@ $ python3 server.py
 
 Open localhost:5000 on browser.
 
+## Demo
+
+![](http://www.giphy.com/gifs/Rej49lyaoVh6OSLTAQ)
+
 
 
