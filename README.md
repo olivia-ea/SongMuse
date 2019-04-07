@@ -6,10 +6,6 @@ SongMuse is a full stack web app that uses the Spotify API to generate playlists
 * [Setting Up/Installation](#installation)
 * [Demo](#demo)
 
-
-
-
-
 ## TechStack
 * Frontend: HTML5, JavaScript, Jinja, jQuery, Bootstrap 
 * Backend: Python, Flask, PostgreSQL, SQLAlchemy 
