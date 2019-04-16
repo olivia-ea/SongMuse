@@ -4,7 +4,7 @@ SongMuse is a full stack web app that uses the Spotify API to generate playlists
 ## Table of Contents
 * [Tech Stack](#techstack) 
 * [Setting Up/Installation](#installation)
-* [Demo](#demo)
+* [Features](#features)
 
 ## TechStack
 * Frontend: HTML5, JavaScript, Jinja, jQuery, Bootstrap 
@@ -59,9 +59,19 @@ $ python3 server.py
 
 Open localhost:5000 on browser.
 
-## Demo
+## Features
 
-![](http://www.giphy.com/gifs/Rej49lyaoVh6OSLTAQ)
+* Log In/Log out.
+
+* New users are verfied using Spotify via OAuth to access Spotify's music services.
+
+* User can view and listent to previously created playlists.
+
+* Option to listen in browser and Spotify app.
+
+* User can create new playlist using single keyword.
+
+* New playlist is automatically uploaded to Spotify account.
 
 
 
